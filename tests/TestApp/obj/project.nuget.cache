@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "dgSpecHash": "QjzjDJHPhTI=",
+  "success": true,
+  "projectFilePath": "M:\\git\\Bolero.FCS.Build\\tests\\TestApp\\TestApp.fsproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Administrator\\.nuget\\packages\\bolero.fsharp.compiler.service\\1.0.0\\bolero.fsharp.compiler.service.1.0.0.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\fsharp.core\\10.0.101\\fsharp.core.10.0.101.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\fsharp.dependencymanager.nuget\\35.0.0\\fsharp.dependencymanager.nuget.35.0.0.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "message": "Bolero.FSharp.Compiler.Service 1.0.0 depends on FSharp.DependencyManager.Nuget (>= 1.0.0) but FSharp.DependencyManager.Nuget 1.0.0 was not found. FSharp.DependencyManager.Nuget 35.0.0 was resolved instead.",
+      "projectPath": "M:\\git\\Bolero.FCS.Build\\tests\\TestApp\\TestApp.fsproj",
+      "warningLevel": 1,
+      "filePath": "M:\\git\\Bolero.FCS.Build\\tests\\TestApp\\TestApp.fsproj",
+      "libraryId": "FSharp.DependencyManager.Nuget",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
+}

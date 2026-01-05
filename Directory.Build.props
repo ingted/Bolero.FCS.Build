@@ -1,0 +1,37 @@
+<Project>
+  <PropertyGroup>
+    <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
+    <FSharpSourcesRoot>$(RepoRoot)src</FSharpSourcesRoot>
+    <FSharpNetCoreProductDefaultTargetFramework>net9.0</FSharpNetCoreProductDefaultTargetFramework>
+    <FSharpNetCoreProductTargetFramework>net9.0</FSharpNetCoreProductTargetFramework>
+    <ArtifactsDir>$(MSBuildThisFileDirectory)artifacts/</ArtifactsDir>
+    <OutputPath>$(ArtifactsDir)bin/$(MSBuildProjectName)/$(Configuration)/</OutputPath>
+    <IntermediateOutputPath>$(ArtifactsDir)obj/$(MSBuildProjectName)/$(Configuration)/</IntermediateOutputPath>
+    
+    <!-- Dependency Versions -->
+    <FSCorePackageVersionValue>9.0.100</FSCorePackageVersionValue>
+    <FSharpCoreShippedPackageVersionValue>9.0.100</FSharpCoreShippedPackageVersionValue>
+    <SystemBuffersVersion>4.5.1</SystemBuffersVersion>
+    <SystemMemoryVersion>4.5.5</SystemMemoryVersion>
+    <SystemRuntimeCompilerServicesUnsafeVersion>6.0.0</SystemRuntimeCompilerServicesUnsafeVersion>
+    <SystemCollectionsImmutableVersion>8.0.0</SystemCollectionsImmutableVersion>
+    <SystemReflectionEmitVersion>4.7.0</SystemReflectionEmitVersion>
+    <SystemReflectionMetadataVersion>8.0.0</SystemReflectionMetadataVersion>
+    <SystemDiagnosticsDiagnosticSourceVersion>8.0.0</SystemDiagnosticsDiagnosticSourceVersion>
+    <MicrosoftBuildFrameworkVersion>17.0.0</MicrosoftBuildFrameworkVersion>
+    <MicrosoftBuildTasksCoreVersion>17.0.0</MicrosoftBuildTasksCoreVersion>
+    <MicrosoftBuildUtilitiesCoreVersion>17.0.0</MicrosoftBuildUtilitiesCoreVersion>
+    
+    <!-- Build Settings -->
+    <VersionSuffix></VersionSuffix>
+    <FSharpLibrariesChangelogVersion>9.0.100</FSharpLibrariesChangelogVersion>
+    <FSLanguageVersion>preview</FSLanguageVersion>
+    <OtherFlags>$(OtherFlags) --times</OtherFlags>
+    
+    <!-- Disable the auto-set logic -->
+    <DisableAutoSetFscCompilerPath>false</DisableAutoSetFscCompilerPath>
+    <BUILDING_USING_DOTNET>true</BUILDING_USING_DOTNET>
+    <FsLexPath>$(ArtifactsDir)bin/fslex/Release/net9.0/win-x64/fslex.dll</FsLexPath>
+    <FsYaccPath>$(ArtifactsDir)bin/fsyacc/Release/net9.0/win-x64/fsyacc.dll</FsYaccPath>
+  </PropertyGroup>
+</Project>

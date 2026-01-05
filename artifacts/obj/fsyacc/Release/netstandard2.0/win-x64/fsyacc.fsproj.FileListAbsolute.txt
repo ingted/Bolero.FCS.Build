@@ -1,0 +1,9 @@
+M:\git\Bolero.FCS.Build\artifacts\bin\fsyacc\Release\netstandard2.0\win-x64\fsyacc.deps.json
+M:\git\Bolero.FCS.Build\artifacts\bin\fsyacc\Release\netstandard2.0\win-x64\fsyacc.dll
+M:\git\Bolero.FCS.Build\artifacts\bin\fsyacc\Release\netstandard2.0\win-x64\fsyacc.pdb
+M:\git\Bolero.FCS.Build\artifacts\obj\fsyacc\Release\netstandard2.0\win-x64\fsyacc.fsproj.AssemblyReference.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\fsyacc\Release\netstandard2.0\win-x64\fsyacc.AssemblyInfoInputs.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\fsyacc\Release\netstandard2.0\win-x64\fsyacc.AssemblyInfo.fs
+M:\git\Bolero.FCS.Build\artifacts\obj\fsyacc\Release\netstandard2.0\win-x64\fsyacc.fsproj.CoreCompileInputs.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\fsyacc\Release\netstandard2.0\win-x64\fsyacc.dll
+M:\git\Bolero.FCS.Build\artifacts\obj\fsyacc\Release\netstandard2.0\win-x64\fsyacc.pdb

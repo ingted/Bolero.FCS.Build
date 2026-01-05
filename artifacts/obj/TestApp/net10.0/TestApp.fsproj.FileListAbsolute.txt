@@ -1,0 +1,15 @@
+M:\git\Bolero.FCS.Build\artifacts\obj\TestApp\net10.0\TestApp.fsproj.AssemblyReference.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\TestApp\net10.0\TestApp.AssemblyInfoInputs.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\TestApp\net10.0\TestApp.AssemblyInfo.fs
+M:\git\Bolero.FCS.Build\artifacts\obj\TestApp\net10.0\TestApp.fsproj.CoreCompileInputs.cache
+M:\git\Bolero.FCS.Build\artifacts\bin\TestApp\net10.0\TestApp.exe
+M:\git\Bolero.FCS.Build\artifacts\bin\TestApp\net10.0\TestApp.deps.json
+M:\git\Bolero.FCS.Build\artifacts\bin\TestApp\net10.0\TestApp.runtimeconfig.json
+M:\git\Bolero.FCS.Build\artifacts\bin\TestApp\net10.0\TestApp.dll
+M:\git\Bolero.FCS.Build\artifacts\bin\TestApp\net10.0\TestApp.pdb
+M:\git\Bolero.FCS.Build\artifacts\obj\TestApp\net10.0\TestApp.fsproj.Up2Date
+M:\git\Bolero.FCS.Build\artifacts\obj\TestApp\net10.0\TestApp.dll
+M:\git\Bolero.FCS.Build\artifacts\obj\TestApp\net10.0\refint\TestApp.dll
+M:\git\Bolero.FCS.Build\artifacts\obj\TestApp\net10.0\TestApp.pdb
+M:\git\Bolero.FCS.Build\artifacts\obj\TestApp\net10.0\TestApp.genruntimeconfig.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\TestApp\net10.0\ref\TestApp.dll

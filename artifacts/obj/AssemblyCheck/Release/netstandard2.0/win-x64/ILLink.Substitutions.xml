@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<linker>
+  <assembly fullname="AssemblyCheck">
+    <resource name="FSharpSignatureData.AssemblyCheck" action="remove"></resource>
+    <resource name="FSharpSignatureCompressedData.AssemblyCheck" action="remove"></resource>
+    <resource name="FSharpSignatureDataB.AssemblyCheck" action="remove"></resource>
+    <resource name="FSharpSignatureCompressedDataB.AssemblyCheck" action="remove"></resource>
+    <resource name="FSharpOptimizationData.AssemblyCheck" action="remove"></resource>
+    <resource name="FSharpOptimizationCompressedData.AssemblyCheck" action="remove"></resource>
+    <resource name="FSharpOptimizationDataB.AssemblyCheck" action="remove"></resource>
+    <resource name="FSharpOptimizationCompressedDataB.AssemblyCheck" action="remove"></resource>
+    <resource name="FSharpOptimizationInfo.AssemblyCheck" action="remove"></resource>
+    <resource name="FSharpSignatureInfo.AssemblyCheck" action="remove"></resource>
+  </assembly>
+</linker>

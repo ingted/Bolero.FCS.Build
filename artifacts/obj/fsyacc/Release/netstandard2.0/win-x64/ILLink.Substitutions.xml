@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<linker>
+  <assembly fullname="fsyacc">
+    <resource name="FSharpSignatureData.fsyacc" action="remove"></resource>
+    <resource name="FSharpSignatureCompressedData.fsyacc" action="remove"></resource>
+    <resource name="FSharpSignatureDataB.fsyacc" action="remove"></resource>
+    <resource name="FSharpSignatureCompressedDataB.fsyacc" action="remove"></resource>
+    <resource name="FSharpOptimizationData.fsyacc" action="remove"></resource>
+    <resource name="FSharpOptimizationCompressedData.fsyacc" action="remove"></resource>
+    <resource name="FSharpOptimizationDataB.fsyacc" action="remove"></resource>
+    <resource name="FSharpOptimizationCompressedDataB.fsyacc" action="remove"></resource>
+    <resource name="FSharpOptimizationInfo.fsyacc" action="remove"></resource>
+    <resource name="FSharpSignatureInfo.fsyacc" action="remove"></resource>
+  </assembly>
+</linker>

@@ -1,0 +1,4 @@
+M:\git\Bolero.FCS.Build\artifacts\obj\AssemblyCheck\Release\netstandard2.0\win-x64\AssemblyCheck.fsproj.AssemblyReference.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\AssemblyCheck\Release\netstandard2.0\win-x64\AssemblyCheck.AssemblyInfoInputs.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\AssemblyCheck\Release\netstandard2.0\win-x64\AssemblyCheck.AssemblyInfo.fs
+M:\git\Bolero.FCS.Build\artifacts\obj\AssemblyCheck\Release\netstandard2.0\win-x64\AssemblyCheck.fsproj.CoreCompileInputs.cache

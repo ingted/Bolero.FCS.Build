@@ -1,0 +1,11 @@
+M:\git\Bolero.FCS.Build\artifacts\bin\FSharp.Core\Release\netstandard2.1\FSharp.Core.deps.json
+M:\git\Bolero.FCS.Build\artifacts\bin\FSharp.Core\Release\netstandard2.1\FSharp.Core.dll
+M:\git\Bolero.FCS.Build\artifacts\bin\FSharp.Core\Release\netstandard2.1\FSharp.Core.pdb
+M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.Core\Release\netstandard2.1\FSCore.fs
+M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.Core\Release\netstandard2.1\FSCore.resources
+M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.Core\Release\netstandard2.1\FSharp.Core.fsproj.GenerateResource.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.Core\Release\netstandard2.1\FSharp.Core.AssemblyInfoInputs.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.Core\Release\netstandard2.1\FSharp.Core.AssemblyInfo.fs
+M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.Core\Release\netstandard2.1\FSharp.Core.fsproj.CoreCompileInputs.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.Core\Release\netstandard2.1\FSharp.Core.dll
+M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.Core\Release\netstandard2.1\FSharp.Core.pdb

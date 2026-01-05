@@ -1,0 +1,15 @@
+M:\git\Bolero.FCS.Build\artifacts\bin\fslex\Release\net9.0\win-x64\fslex.exe
+M:\git\Bolero.FCS.Build\artifacts\bin\fslex\Release\net9.0\win-x64\fslex.deps.json
+M:\git\Bolero.FCS.Build\artifacts\bin\fslex\Release\net9.0\win-x64\fslex.runtimeconfig.json
+M:\git\Bolero.FCS.Build\artifacts\bin\fslex\Release\net9.0\win-x64\fslex.dll
+M:\git\Bolero.FCS.Build\artifacts\bin\fslex\Release\net9.0\win-x64\fslex.pdb
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Release\net9.0\win-x64\fslex.fsproj.AssemblyReference.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Release\net9.0\win-x64\fslex.AssemblyInfoInputs.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Release\net9.0\win-x64\fslex.AssemblyInfo.fs
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Release\net9.0\win-x64\fslex.fsproj.CoreCompileInputs.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Release\net9.0\win-x64\fslex.fsproj.Up2Date
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Release\net9.0\win-x64\fslex.dll
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Release\net9.0\win-x64\refint\fslex.dll
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Release\net9.0\win-x64\fslex.pdb
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Release\net9.0\win-x64\fslex.genruntimeconfig.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Release\net9.0\win-x64\ref\fslex.dll

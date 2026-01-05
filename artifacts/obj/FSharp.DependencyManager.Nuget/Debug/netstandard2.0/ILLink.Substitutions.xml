@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<linker>
+  <assembly fullname="FSharp.DependencyManager.Nuget">
+    <resource name="FSharpSignatureData.FSharp.DependencyManager.Nuget" action="remove"></resource>
+    <resource name="FSharpSignatureCompressedData.FSharp.DependencyManager.Nuget" action="remove"></resource>
+    <resource name="FSharpSignatureDataB.FSharp.DependencyManager.Nuget" action="remove"></resource>
+    <resource name="FSharpSignatureCompressedDataB.FSharp.DependencyManager.Nuget" action="remove"></resource>
+    <resource name="FSharpOptimizationData.FSharp.DependencyManager.Nuget" action="remove"></resource>
+    <resource name="FSharpOptimizationCompressedData.FSharp.DependencyManager.Nuget" action="remove"></resource>
+    <resource name="FSharpOptimizationDataB.FSharp.DependencyManager.Nuget" action="remove"></resource>
+    <resource name="FSharpOptimizationCompressedDataB.FSharp.DependencyManager.Nuget" action="remove"></resource>
+    <resource name="FSharpOptimizationInfo.FSharp.DependencyManager.Nuget" action="remove"></resource>
+    <resource name="FSharpSignatureInfo.FSharp.DependencyManager.Nuget" action="remove"></resource>
+  </assembly>
+</linker>

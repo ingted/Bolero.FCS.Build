@@ -1,0 +1,9 @@
+M:\git\Bolero.FCS.Build\artifacts\bin\fslex\Release\netstandard2.0\win-x64\fslex.deps.json
+M:\git\Bolero.FCS.Build\artifacts\bin\fslex\Release\netstandard2.0\win-x64\fslex.dll
+M:\git\Bolero.FCS.Build\artifacts\bin\fslex\Release\netstandard2.0\win-x64\fslex.pdb
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Release\netstandard2.0\win-x64\fslex.fsproj.AssemblyReference.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Release\netstandard2.0\win-x64\fslex.AssemblyInfoInputs.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Release\netstandard2.0\win-x64\fslex.AssemblyInfo.fs
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Release\netstandard2.0\win-x64\fslex.fsproj.CoreCompileInputs.cache
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Release\netstandard2.0\win-x64\fslex.dll
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Release\netstandard2.0\win-x64\fslex.pdb
