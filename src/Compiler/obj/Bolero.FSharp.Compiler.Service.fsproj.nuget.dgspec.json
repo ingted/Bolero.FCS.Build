@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "M:\\git\\Bolero.FCS.Build\\src\\Compiler\\Bolero.FSharp.Compiler.Service.fsproj": {}
+    "M:\\git\\Bolero.FCS.Build - Copy\\src\\Compiler\\Bolero.FSharp.Compiler.Service.fsproj": {}
   },
   "projects": {
-    "M:\\git\\Bolero.FCS.Build\\src\\Compiler\\Bolero.FSharp.Compiler.Service.fsproj": {
+    "M:\\git\\Bolero.FCS.Build - Copy\\src\\Compiler\\Bolero.FSharp.Compiler.Service.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "M:\\git\\Bolero.FCS.Build\\src\\Compiler\\Bolero.FSharp.Compiler.Service.fsproj",
+        "projectUniqueName": "M:\\git\\Bolero.FCS.Build - Copy\\src\\Compiler\\Bolero.FSharp.Compiler.Service.fsproj",
         "projectName": "Bolero.FSharp.Compiler.Service",
-        "projectPath": "M:\\git\\Bolero.FCS.Build\\src\\Compiler\\Bolero.FSharp.Compiler.Service.fsproj",
+        "projectPath": "M:\\git\\Bolero.FCS.Build - Copy\\src\\Compiler\\Bolero.FSharp.Compiler.Service.fsproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "M:\\git\\Bolero.FCS.Build\\src\\Compiler\\obj\\",
+        "outputPath": "M:\\git\\Bolero.FCS.Build - Copy\\src\\Compiler\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
+          "M:\\git\\WasmScriptPoc\\NuGet.Config",
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -29,6 +30,7 @@
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
           "C:\\Program Files\\dotnet\\sdk\\10.0.101\\FSharp\\library-packs": {},
+          "M:\\git\\Bolero.FCS.Build\\packages": {},
           "M:\\git\\LocalFeed": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -36,11 +38,11 @@
           "netstandard2.0": {
             "targetAlias": "netstandard2.0",
             "projectReferences": {
-              "M:\\git\\Bolero.FCS.Build\\src\\FSharp.Core\\FSharp.Core.fsproj": {
-                "projectPath": "M:\\git\\Bolero.FCS.Build\\src\\FSharp.Core\\FSharp.Core.fsproj"
+              "M:\\git\\Bolero.FCS.Build - Copy\\src\\FSharp.Core\\FSharp.Core.fsproj": {
+                "projectPath": "M:\\git\\Bolero.FCS.Build - Copy\\src\\FSharp.Core\\FSharp.Core.fsproj"
               },
-              "M:\\git\\Bolero.FCS.Build\\src\\FSharp.DependencyManager.Nuget\\FSharp.DependencyManager.Nuget.fsproj": {
-                "projectPath": "M:\\git\\Bolero.FCS.Build\\src\\FSharp.DependencyManager.Nuget\\FSharp.DependencyManager.Nuget.fsproj"
+              "M:\\git\\Bolero.FCS.Build - Copy\\src\\FSharp.DependencyManager.Nuget\\FSharp.DependencyManager.Nuget.fsproj": {
+                "projectPath": "M:\\git\\Bolero.FCS.Build - Copy\\src\\FSharp.DependencyManager.Nuget\\FSharp.DependencyManager.Nuget.fsproj"
               }
             }
           }
@@ -119,20 +121,21 @@
         }
       }
     },
-    "M:\\git\\Bolero.FCS.Build\\src\\FSharp.Core\\FSharp.Core.fsproj": {
+    "M:\\git\\Bolero.FCS.Build - Copy\\src\\FSharp.Core\\FSharp.Core.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "M:\\git\\Bolero.FCS.Build\\src\\FSharp.Core\\FSharp.Core.fsproj",
+        "projectUniqueName": "M:\\git\\Bolero.FCS.Build - Copy\\src\\FSharp.Core\\FSharp.Core.fsproj",
         "projectName": "FSharp.Core",
-        "projectPath": "M:\\git\\Bolero.FCS.Build\\src\\FSharp.Core\\FSharp.Core.fsproj",
+        "projectPath": "M:\\git\\Bolero.FCS.Build - Copy\\src\\FSharp.Core\\FSharp.Core.fsproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "M:\\git\\Bolero.FCS.Build\\src\\FSharp.Core\\obj\\",
+        "outputPath": "M:\\git\\Bolero.FCS.Build - Copy\\src\\FSharp.Core\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
+          "M:\\git\\WasmScriptPoc\\NuGet.Config",
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -145,6 +148,7 @@
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
           "C:\\Program Files\\dotnet\\sdk\\10.0.101\\FSharp\\library-packs": {},
+          "M:\\git\\Bolero.FCS.Build\\packages": {},
           "M:\\git\\LocalFeed": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -212,20 +216,21 @@
         }
       }
     },
-    "M:\\git\\Bolero.FCS.Build\\src\\FSharp.DependencyManager.Nuget\\FSharp.DependencyManager.Nuget.fsproj": {
+    "M:\\git\\Bolero.FCS.Build - Copy\\src\\FSharp.DependencyManager.Nuget\\FSharp.DependencyManager.Nuget.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "M:\\git\\Bolero.FCS.Build\\src\\FSharp.DependencyManager.Nuget\\FSharp.DependencyManager.Nuget.fsproj",
+        "projectUniqueName": "M:\\git\\Bolero.FCS.Build - Copy\\src\\FSharp.DependencyManager.Nuget\\FSharp.DependencyManager.Nuget.fsproj",
         "projectName": "FSharp.DependencyManager.Nuget",
-        "projectPath": "M:\\git\\Bolero.FCS.Build\\src\\FSharp.DependencyManager.Nuget\\FSharp.DependencyManager.Nuget.fsproj",
+        "projectPath": "M:\\git\\Bolero.FCS.Build - Copy\\src\\FSharp.DependencyManager.Nuget\\FSharp.DependencyManager.Nuget.fsproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "M:\\git\\Bolero.FCS.Build\\src\\FSharp.DependencyManager.Nuget\\obj\\",
+        "outputPath": "M:\\git\\Bolero.FCS.Build - Copy\\src\\FSharp.DependencyManager.Nuget\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
+          "M:\\git\\WasmScriptPoc\\NuGet.Config",
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -237,6 +242,7 @@
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
           "C:\\Program Files\\dotnet\\sdk\\10.0.101\\FSharp\\library-packs": {},
+          "M:\\git\\Bolero.FCS.Build\\packages": {},
           "M:\\git\\LocalFeed": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -244,8 +250,8 @@
           "netstandard2.0": {
             "targetAlias": "netstandard2.0",
             "projectReferences": {
-              "M:\\git\\Bolero.FCS.Build\\src\\FSharp.Core\\FSharp.Core.fsproj": {
-                "projectPath": "M:\\git\\Bolero.FCS.Build\\src\\FSharp.Core\\FSharp.Core.fsproj"
+              "M:\\git\\Bolero.FCS.Build - Copy\\src\\FSharp.Core\\FSharp.Core.fsproj": {
+                "projectPath": "M:\\git\\Bolero.FCS.Build - Copy\\src\\FSharp.Core\\FSharp.Core.fsproj"
               }
             }
           }

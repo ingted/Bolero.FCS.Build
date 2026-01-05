@@ -14,3 +14,17 @@ M:\git\Bolero.FCS.Build\artifacts\obj\fsyacc\Debug\net9.0\win-x64\fsyacc.pdb
 M:\git\Bolero.FCS.Build\artifacts\obj\fsyacc\Debug\net9.0\win-x64\fsyacc.genruntimeconfig.cache
 M:\git\Bolero.FCS.Build\artifacts\obj\fsyacc\Debug\net9.0\win-x64\ref\fsyacc.dll
 M:\git\Bolero.FCS.Build\artifacts\obj\fsyacc\Debug\net9.0\win-x64\fsyacc.sourcelink.json
+M:\git\Bolero.FCS.Build - Copy\artifacts\bin\fsyacc\Debug\net9.0\win-x64\fsyacc.exe
+M:\git\Bolero.FCS.Build - Copy\artifacts\bin\fsyacc\Debug\net9.0\win-x64\fsyacc.deps.json
+M:\git\Bolero.FCS.Build - Copy\artifacts\bin\fsyacc\Debug\net9.0\win-x64\fsyacc.runtimeconfig.json
+M:\git\Bolero.FCS.Build - Copy\artifacts\bin\fsyacc\Debug\net9.0\win-x64\fsyacc.dll
+M:\git\Bolero.FCS.Build - Copy\artifacts\bin\fsyacc\Debug\net9.0\win-x64\fsyacc.pdb
+M:\git\Bolero.FCS.Build - Copy\artifacts\obj\fsyacc\Debug\net9.0\win-x64\fsyacc.AssemblyInfoInputs.cache
+M:\git\Bolero.FCS.Build - Copy\artifacts\obj\fsyacc\Debug\net9.0\win-x64\fsyacc.AssemblyInfo.fs
+M:\git\Bolero.FCS.Build - Copy\artifacts\obj\fsyacc\Debug\net9.0\win-x64\fsyacc.fsproj.CoreCompileInputs.cache
+M:\git\Bolero.FCS.Build - Copy\artifacts\obj\fsyacc\Debug\net9.0\win-x64\fsyacc.sourcelink.json
+M:\git\Bolero.FCS.Build - Copy\artifacts\obj\fsyacc\Debug\net9.0\win-x64\fsyacc.dll
+M:\git\Bolero.FCS.Build - Copy\artifacts\obj\fsyacc\Debug\net9.0\win-x64\refint\fsyacc.dll
+M:\git\Bolero.FCS.Build - Copy\artifacts\obj\fsyacc\Debug\net9.0\win-x64\fsyacc.pdb
+M:\git\Bolero.FCS.Build - Copy\artifacts\obj\fsyacc\Debug\net9.0\win-x64\fsyacc.genruntimeconfig.cache
+M:\git\Bolero.FCS.Build - Copy\artifacts\obj\fsyacc\Debug\net9.0\win-x64\ref\fsyacc.dll

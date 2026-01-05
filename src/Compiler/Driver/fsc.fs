@@ -442,7 +442,7 @@ let getParallelReferenceResolutionFromEnvironment () =
 ///   - Import assemblies
 ///   - Parse source files
 ///   - Check the inputs
-let main1
+let main1Async
     (
         ctok,
         argv,
@@ -454,7 +454,7 @@ let main1
         diagnosticsLoggerProvider: IDiagnosticsLoggerProvider,
         disposables: DisposablesTracker
     ) =
-
+    async {
     // See Bug 735819
     let lcidFromCodePage =
         let thread = Thread.CurrentThread
@@ -602,9 +602,8 @@ let main1
         TcAssemblyResolutions.SplitNonFoundationalResolutions(tcConfig)
 
     // Import basic assemblies
-    let tcGlobals, frameworkTcImports =
+    let! tcGlobals, frameworkTcImports =
         TcImports.BuildFrameworkTcImports(foundationalTcConfigP, sysRes, otherRes)
-        |> Async.RunImmediate
 
     let ilSourceDocs =
         [
@@ -650,9 +649,8 @@ let main1
     // Import other assemblies
     ReportTime tcConfig "Import non-system references"
 
-    let tcImports =
+    let! tcImports =
         TcImports.BuildNonFrameworkTcImports(tcConfigP, frameworkTcImports, otherRes, knownUnresolved, dependencyProvider)
-        |> Async.RunImmediate
 
     // register tcImports to be disposed in future
     disposables.Register tcImports
@@ -680,7 +678,7 @@ let main1
     AbortOnError(diagnosticsLogger, exiter)
     ReportTime tcConfig "Typechecked"
 
-    Args(
+    return Args(
         ctok,
         tcGlobals,
         tcImports,
@@ -696,6 +694,10 @@ let main1
         exiter,
         ilSourceDocs
     )
+    }
+
+let main1 args =
+    Async.RunImmediate (main1Async args)
 
 /// Second phase of compilation.
 ///   - Write the signature file, check some attributes
@@ -1243,3 +1245,39 @@ let CompileFromCommandLineArguments
     |> main4 (tcImportsCapture, dynamicAssemblyCreator)
     |> main5
     |> main6 dynamicAssemblyCreator
+
+let CompileFromCommandLineArgumentsAsync
+    (
+        ctok,
+        argv,
+        legacyReferenceResolver,
+        bannerAlreadyPrinted,
+        reduceMemoryUsage,
+        defaultCopyFSharpCore,
+        exiter: Exiter,
+        loggerProvider,
+        tcImportsCapture,
+        dynamicAssemblyCreator
+    ) =
+    async {
+        use disposables = new DisposablesTracker()
+
+        let! args = main1Async (
+            ctok,
+            argv,
+            legacyReferenceResolver,
+            bannerAlreadyPrinted,
+            reduceMemoryUsage,
+            defaultCopyFSharpCore,
+            exiter,
+            loggerProvider,
+            disposables
+        )
+        return
+            args
+            |> main2
+            |> main3
+            |> main4 (tcImportsCapture, dynamicAssemblyCreator)
+            |> main5
+            |> main6 dynamicAssemblyCreator
+    }

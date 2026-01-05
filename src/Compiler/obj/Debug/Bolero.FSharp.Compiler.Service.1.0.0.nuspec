@@ -7,7 +7,7 @@
     <description>The F# Compiler Services package for F# preview exposes additional functionality for implementing F# language bindings, additional tools based on the compiler or refactoring tools. The package also includes F# interactive service that can be used for embedding F# scripting into your applications.  Contains code from the F# Software Foundation.</description>
     <releaseNotes>/blob/main/docs/release-notes/.FSharp.Compiler.Service/9.0.100.md</releaseNotes>
     <tags>F#, fsharp, interactive, compiler, editor</tags>
-    <repository type="git" commit="756229f588227194744001f6e144eed8f41af0b6" />
+    <repository type="git" commit="eb379cd66f4bf03e5b6cdbe4082678316c9976fe" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
         <dependency id="FSharp.Core" version="1.0.0" exclude="Build,Analyzers" />
@@ -26,8 +26,8 @@
     </contentFiles>
   </metadata>
   <files>
-    <file src="M:\git\Bolero.FCS.Build\artifacts\bin\Bolero.FSharp.Compiler.Service\Debug\netstandard2.0\FSharp.Compiler.Service.dll" target="lib\netstandard2.0\FSharp.Compiler.Service.dll" />
-    <file src="M:\git\Bolero.FCS.Build\src\Compiler\Driver\GraphChecking\Docs.md" target="content\Driver\GraphChecking\Docs.md" />
-    <file src="M:\git\Bolero.FCS.Build\src\Compiler\Driver\GraphChecking\Docs.md" target="contentFiles\any\netstandard2.0\Driver\GraphChecking\Docs.md" />
+    <file src="M:\git\Bolero.FCS.Build - Copy\artifacts\bin\Bolero.FSharp.Compiler.Service\Debug\netstandard2.0\FSharp.Compiler.Service.dll" target="lib\netstandard2.0\FSharp.Compiler.Service.dll" />
+    <file src="M:\git\Bolero.FCS.Build - Copy\src\Compiler\Driver\GraphChecking\Docs.md" target="content\Driver\GraphChecking\Docs.md" />
+    <file src="M:\git\Bolero.FCS.Build - Copy\src\Compiler\Driver\GraphChecking\Docs.md" target="contentFiles\any\netstandard2.0\Driver\GraphChecking\Docs.md" />
   </files>
 </package>

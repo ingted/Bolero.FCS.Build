@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5H527Qnn5ms=",
+  "dgSpecHash": "MmNEApLrQEk=",
   "success": true,
-  "projectFilePath": "M:\\git\\Bolero.FCS.Build\\src\\Compiler\\Bolero.FSharp.Compiler.Service.fsproj",
+  "projectFilePath": "M:\\git\\Bolero.FCS.Build - Copy\\src\\Compiler\\Bolero.FSharp.Compiler.Service.fsproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
