@@ -13,3 +13,4 @@ M:\git\Bolero.FCS.Build\artifacts\obj\fsyacc\Debug\net9.0\win-x64\refint\fsyacc.
 M:\git\Bolero.FCS.Build\artifacts\obj\fsyacc\Debug\net9.0\win-x64\fsyacc.pdb
 M:\git\Bolero.FCS.Build\artifacts\obj\fsyacc\Debug\net9.0\win-x64\fsyacc.genruntimeconfig.cache
 M:\git\Bolero.FCS.Build\artifacts\obj\fsyacc\Debug\net9.0\win-x64\ref\fsyacc.dll
+M:\git\Bolero.FCS.Build\artifacts\obj\fsyacc\Debug\net9.0\win-x64\fsyacc.sourcelink.json

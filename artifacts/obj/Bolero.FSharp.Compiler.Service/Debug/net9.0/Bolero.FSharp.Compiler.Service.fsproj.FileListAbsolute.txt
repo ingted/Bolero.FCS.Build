@@ -31,3 +31,4 @@ M:\git\Bolero.FCS.Build\artifacts\obj\Bolero.FSharp.Compiler.Service\Debug\net9.
 M:\git\Bolero.FCS.Build\artifacts\obj\Bolero.FSharp.Compiler.Service\Debug\net9.0\refint\FSharp.Compiler.Service.dll
 M:\git\Bolero.FCS.Build\artifacts\obj\Bolero.FSharp.Compiler.Service\Debug\net9.0\FSharp.Compiler.Service.pdb
 M:\git\Bolero.FCS.Build\artifacts\obj\Bolero.FSharp.Compiler.Service\Debug\net9.0\ref\FSharp.Compiler.Service.dll
+M:\git\Bolero.FCS.Build\artifacts\obj\Bolero.FSharp.Compiler.Service\Debug\net9.0\Bolero.FSharp.Compiler.Service.sourcelink.json

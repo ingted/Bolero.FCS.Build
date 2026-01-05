@@ -9,3 +9,4 @@ M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.Core\Debug\netstandard2.1\FSharp.Co
 M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.Core\Debug\netstandard2.1\FSharp.Core.fsproj.CoreCompileInputs.cache
 M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.Core\Debug\netstandard2.1\FSharp.Core.dll
 M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.Core\Debug\netstandard2.1\FSharp.Core.pdb
+M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.Core\Debug\netstandard2.1\FSharp.Core.sourcelink.json

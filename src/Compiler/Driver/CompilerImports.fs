@@ -2371,7 +2371,8 @@ and [<Sealed>] TcImports
                     ReportWarnings warns
 
                     tcImports.RegisterAndImportReferencedAssemblies(ctok, res)
-                    |> Async.RunSynchronously
+                    |> Async.StartImmediateAsTask
+                    |> fun t -> t.Result
                     |> ignore
 
                     true
@@ -2679,7 +2680,8 @@ let RequireReferences (ctok, tcImports: TcImports, tcEnv, thisAssemblyName, reso
 
     let ccuinfos =
         tcImports.RegisterAndImportReferencedAssemblies(ctok, resolutions)
-        |> Async.RunSynchronously
+        |> Async.StartImmediateAsTask
+        |> fun t -> t.Result
 
     let asms =
         ccuinfos

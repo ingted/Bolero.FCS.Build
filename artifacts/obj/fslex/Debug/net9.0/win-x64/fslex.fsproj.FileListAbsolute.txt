@@ -13,3 +13,4 @@ M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Debug\net9.0\win-x64\refint\fslex.dl
 M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Debug\net9.0\win-x64\fslex.pdb
 M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Debug\net9.0\win-x64\fslex.genruntimeconfig.cache
 M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Debug\net9.0\win-x64\ref\fslex.dll
+M:\git\Bolero.FCS.Build\artifacts\obj\fslex\Debug\net9.0\win-x64\fslex.sourcelink.json

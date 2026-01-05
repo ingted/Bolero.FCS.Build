@@ -23,7 +23,6 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net9.0",
           "netstandard2.0"
         ],
         "sources": {
@@ -34,17 +33,6 @@
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net9.0": {
-            "targetAlias": "net9.0",
-            "projectReferences": {
-              "M:\\git\\Bolero.FCS.Build\\src\\FSharp.Core\\FSharp.Core.fsproj": {
-                "projectPath": "M:\\git\\Bolero.FCS.Build\\src\\FSharp.Core\\FSharp.Core.fsproj"
-              },
-              "M:\\git\\Bolero.FCS.Build\\src\\FSharp.DependencyManager.Nuget\\FSharp.DependencyManager.Nuget.fsproj": {
-                "projectPath": "M:\\git\\Bolero.FCS.Build\\src\\FSharp.DependencyManager.Nuget\\FSharp.DependencyManager.Nuget.fsproj"
-              }
-            }
-          },
           "netstandard2.0": {
             "targetAlias": "netstandard2.0",
             "projectReferences": {
@@ -70,26 +58,6 @@
         "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
-        "net9.0": {
-          "targetAlias": "net9.0",
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
-        },
         "netstandard2.0": {
           "targetAlias": "netstandard2.0",
           "dependencies": {

@@ -4,6 +4,7 @@ open System.Threading
 open FSharp.Compiler.GraphChecking
 open System.Threading.Tasks
 open System
+open System.Runtime.InteropServices
 
 /// Information about the node in a graph, describing its relation with other nodes.
 type NodeInfo<'Item> =
@@ -149,7 +150,12 @@ let processGraph<'Item, 'Result when 'Item: equality and 'Item: comparison>
     leaves |> Array.iter queueNode
 
     // Wait for end of processing, an exception, or an external cancellation request.
-    cts.Token.WaitHandle.WaitOne() |> ignore
+    let isBrowser = RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"))
+    if isBrowser then
+        while not cts.IsCancellationRequested do
+            Thread.Yield() |> ignore
+    else
+        cts.Token.WaitHandle.WaitOne() |> ignore
     // If we stopped early due to external cancellation, throw.
     parentCt.ThrowIfCancellationRequested()
 

@@ -3908,10 +3908,9 @@ type FSharpCheckProjectResults
                     | _ -> [||])
                 |> Array.toSeq
             | Choice2Of2 task ->
-                Async.RunSynchronously(
+                Async.StartImmediateAsTask(
                     async {
                         let! tcSymbolUses = task
-
                         return
                             seq {
                                 for symbolUses in tcSymbolUses do
@@ -3919,7 +3918,7 @@ type FSharpCheckProjectResults
                             }
                     },
                     ?cancellationToken = cancellationToken
-                )
+                ).Result
 
         results
         |> Seq.filter (fun symbolUse -> symbolUse.ItemOccurrence <> ItemOccurrence.RelatedText)
@@ -3951,7 +3950,7 @@ type FSharpCheckProjectResults
                         | _ -> TcSymbolUses.Empty
                     | _ -> TcSymbolUses.Empty)
                 |> Array.toSeq
-            | Choice2Of2 tcSymbolUses -> Async.RunSynchronously(tcSymbolUses, ?cancellationToken = cancellationToken)
+            | Choice2Of2 tcSymbolUses -> Async.StartImmediateAsTask(tcSymbolUses, ?cancellationToken = cancellationToken).Result
 
         [|
             for r in tcSymbolUses do

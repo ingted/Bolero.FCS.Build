@@ -49,10 +49,6 @@
     <InternalsVisibleTo Include="FSharp.Compiler.Private.Scripting.UnitTests" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(FSHARPCORE_USE_PACKAGE)' != 'true'">
-    <ProjectReference Include="$(MSBuildThisFileDirectory)..\FSharp.Core\FSharp.Core.fsproj" />
-  </ItemGroup>
-
   <ItemGroup Condition="'$(FSHARPCORE_USE_PACKAGE)' == 'true'">
     <PackageReference Include="FSharp.Core" Version="$(FSharpCoreShippedPackageVersionValue)" />
   </ItemGroup>
@@ -61,6 +57,10 @@
     <PackageReference Include="System.Reflection.Emit" Version="$(SystemReflectionEmitVersion)" />
     <PackageReference Include="System.Reflection.Metadata" Version="$(SystemReflectionMetadataVersion)" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="$(SystemRuntimeCompilerServicesUnsafeVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FSharp.Core\FSharp.Core.fsproj" />
   </ItemGroup>
 
 </Project>

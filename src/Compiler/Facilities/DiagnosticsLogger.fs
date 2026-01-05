@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
 
 module FSharp.Compiler.DiagnosticsLogger
 
@@ -1016,31 +1016,32 @@ module MultipleDiagnosticsLoggers =
 
         // Commit diagnostics from computations as soon as it is possible, preserving the order.
         let replayDiagnostics =
-            backgroundTask {
+            async {
                 let target = DiagnosticsThreadStatics.DiagnosticsLogger
 
                 for tcs in diagnosticsReady do
-                    let! finishedLogger = tcs.Task
+                    let! finishedLogger = tcs.Task |> Async.AwaitTask
                     finishedLogger.CommitDelayedDiagnostics target
             }
 
         async {
+            // We want to restore the current diagnostics context when finished.
+            use _ = new CompilationGlobalsScope()
+            let! replayChild = Async.StartChild replayDiagnostics
             try
-                // We want to restore the current diagnostics context when finished.
-                use _ = new CompilationGlobalsScope()
                 let! results = Async.Parallel computationsWithLoggers
-                do! replayDiagnostics |> Async.AwaitTask
+                do! replayChild
                 return results
-            finally
+            with ex ->
                 // When any of the computation throws, Async.Parallel may not start some remaining computations at all.
                 // We set dummy results for them to allow the task to finish and to not lose any already emitted diagnostics.
-                if not replayDiagnostics.IsCompleted then
-                    let emptyLogger = CapturingDiagnosticsLogger("empty")
+                let emptyLogger = CapturingDiagnosticsLogger("empty")
 
-                    for tcs in diagnosticsReady do
-                        tcs.TrySetResult(emptyLogger) |> ignore
+                for tcs in diagnosticsReady do
+                    tcs.TrySetResult(emptyLogger) |> ignore
 
-                    replayDiagnostics.Wait()
+                do! replayChild
+                return raise ex
         }
 
     let Sequential computations =

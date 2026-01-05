@@ -42,9 +42,11 @@ type GraphNode<'T> private (computation: Async<'T>, cachedResult: ValueOption<'T
                 let! ct = Async.CancellationToken
                 Interlocked.Increment(&requestCount) |> ignore
                 let enter = semaphore.WaitAsync(ct)
+                let mutable entered = false
 
                 try
                     do! enter |> Async.AwaitTask
+                    entered <- true
 
                     match cachedResult with
                     | ValueSome value -> return value
@@ -56,13 +58,9 @@ type GraphNode<'T> private (computation: Async<'T>, cachedResult: ValueOption<'T
                         computation <- Unchecked.defaultof<_>
                         return result
                 finally
-                    // At this point, the semaphore awaiter is either already completed or about to get canceled.
-                    // If calling Wait() does not throw an exception it means the semaphore was successfully taken and needs to be released.
-                    try
-                        enter.Wait()
+                    // Avoid blocking waits on runtimes that don't support them.
+                    if entered then
                         semaphore.Release() |> ignore
-                    with _ ->
-                        ()
 
                     Interlocked.Decrement(&requestCount) |> ignore
             }

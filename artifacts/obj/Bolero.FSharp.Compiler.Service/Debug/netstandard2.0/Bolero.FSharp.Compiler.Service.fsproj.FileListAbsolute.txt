@@ -29,6 +29,7 @@ M:\git\Bolero.FCS.Build\artifacts\obj\Bolero.FSharp.Compiler.Service\Debug\netst
 M:\git\Bolero.FCS.Build\artifacts\obj\Bolero.FSharp.Compiler.Service\Debug\netstandard2.0\Bolero.F.D34D42AB.Up2Date
 M:\git\Bolero.FCS.Build\artifacts\obj\Bolero.FSharp.Compiler.Service\Debug\netstandard2.0\FSharp.Compiler.Service.dll
 M:\git\Bolero.FCS.Build\artifacts\obj\Bolero.FSharp.Compiler.Service\Debug\netstandard2.0\FSharp.Compiler.Service.pdb
+M:\git\Bolero.FCS.Build\artifacts\obj\Bolero.FSharp.Compiler.Service\Debug\netstandard2.0\Bolero.FSharp.Compiler.Service.sourcelink.json
 M:\git\Bolero.FCS.Build\artifacts\obj\Bolero.FSharp.Compiler.Service\Debug\netstandard2.0\illex.fs
 M:\git\Bolero.FCS.Build\artifacts\obj\Bolero.FSharp.Compiler.Service\Debug\netstandard2.0\pplex.fs
 M:\git\Bolero.FCS.Build\artifacts\obj\Bolero.FSharp.Compiler.Service\Debug\netstandard2.0\lex.fs

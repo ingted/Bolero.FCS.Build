@@ -1363,7 +1363,8 @@ type IncrementalBuilder(initialState: IncrementalBuilderInitialState, state: Inc
         let slotOfFile = builder.GetSlotOfFileName fileName
         let syntaxTree = currentState.slots[slotOfFile].SyntaxTree
         syntaxTree.ParseNode.GetOrComputeValue()
-        |> Async.RunSynchronously
+        |> Async.StartImmediateAsTask
+        |> fun t -> t.Result
 
     member builder.NotifyFileChanged(fileName, timeStamp) =
         async {

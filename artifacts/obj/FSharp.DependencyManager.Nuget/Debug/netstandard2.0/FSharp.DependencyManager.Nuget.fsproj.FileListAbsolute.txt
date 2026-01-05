@@ -17,3 +17,4 @@ M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.DependencyManager.Nuget\Debug\netst
 M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.DependencyManager.Nuget\Debug\netstandard2.0\FSharp.D.FB272676.Up2Date
 M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.DependencyManager.Nuget\Debug\netstandard2.0\FSharp.DependencyManager.Nuget.dll
 M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.DependencyManager.Nuget\Debug\netstandard2.0\FSharp.DependencyManager.Nuget.pdb
+M:\git\Bolero.FCS.Build\artifacts\obj\FSharp.DependencyManager.Nuget\Debug\netstandard2.0\FSharp.DependencyManager.Nuget.sourcelink.json

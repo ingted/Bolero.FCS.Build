@@ -3,7 +3,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;</TargetFrameworks>
     <OutputType>Library</OutputType>
     <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
     <DefineConstants>$(DefineConstants);BLAZOR;COMPILER;FX_NO_PDB_READER;FX_NO_PDB_WRITER;FX_NO_SYMBOLSTORE;FX_NO_APP_DOMAINS;FX_NO_WIN_REGISTRY;FX_NO_SYSTEM_CONFIGURATION;FX_RESHAPED_REFEMIT</DefineConstants>
@@ -23,7 +23,7 @@
 
      OSX and Linux has problems with Xliff targets for net9, skipping via SKIP_NETCURRENT_FSC_BUILD until resolved ( The target "UpdateXlf" does not exist in the project.)
 	-->
-    <TargetFrameworks Condition=" '$(OfficialBuildId)' == '' AND '$(FSharpNetCoreProductTargetFramework)' != '' AND '$(Configuration)' != 'Proto' AND '$(SKIP_NETCURRENT_FSC_BUILD)' != 'true' ">$(FSharpNetCoreProductTargetFramework);$(TargetFrameworks)</TargetFrameworks>
+    <!--<TargetFrameworks Condition=" '$(OfficialBuildId)' == '' AND '$(FSharpNetCoreProductTargetFramework)' != '' AND '$(Configuration)' != 'Proto' AND '$(SKIP_NETCURRENT_FSC_BUILD)' != 'true' ">$(FSharpNetCoreProductTargetFramework);$(TargetFrameworks)</TargetFrameworks>-->
     <DefineConstants Condition="'$(FSHARPCORE_USE_PACKAGE)' == 'true'">$(DefineConstants);FSHARPCORE_USE_PACKAGE</DefineConstants>
     <OtherFlags>$(OtherFlags) --extraoptimizationloops:1</OtherFlags>
     <!-- 3218: ArgumentsInSigAndImplMismatch -->
@@ -56,6 +56,7 @@
     <PackageReleaseNotes>/blob/main/docs/release-notes/.FSharp.Compiler.Service/$(FSharpLibrariesChangelogVersion).md</PackageReleaseNotes>
     <PackageTags>F#, fsharp, interactive, compiler, editor</PackageTags>
     <PackageIconFullPath>$(MSBuildThisFileDirectory)logo.png</PackageIconFullPath>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(BUILDING_USING_DOTNET)' == 'true'">

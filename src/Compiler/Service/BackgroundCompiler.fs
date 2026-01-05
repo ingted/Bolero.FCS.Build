@@ -1134,7 +1134,7 @@ type internal BackgroundCompiler
         |> List.tryFind (fun f -> f.FileName = fileName)
         |> Option.bind (fun (f: FSharpFileSnapshot) ->
             let options = projectSnapshot.ToOptions()
-            let sourceText = f.GetSource() |> Async.AwaitTask |> Async.RunSynchronously
+            let sourceText = f.GetSource().Result
 
             self.TryGetRecentCheckResultsForFile(fileName, options, Some sourceText, userOpName)
             |> Option.map (fun (parseFileResults, checkFileResults, _hash) -> (parseFileResults, checkFileResults)))
