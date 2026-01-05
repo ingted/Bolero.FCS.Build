@@ -33,7 +33,9 @@ type FilePath = string
 
 
 module IB =
-    let isBrowser = RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"))
+    let isBrowser =
+        RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"))
+        || Environment.GetEnvironmentVariable("FCS_BROWSER") = "1"
 
 open IB
 type ProjectPath = string

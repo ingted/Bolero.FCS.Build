@@ -969,6 +969,7 @@ type StackGuard(name: string) =
         try
             let isBrowser =
                 RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"))
+                || Environment.GetEnvironmentVariable("FCS_BROWSER") = "1"
             if StackGuard.IsStackSufficient() || isBrowser then
                 f ()
             else

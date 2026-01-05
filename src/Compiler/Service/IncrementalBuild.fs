@@ -1361,7 +1361,9 @@ type IncrementalBuilder(initialState: IncrementalBuilderInitialState, state: Inc
         (builder.TryGetSlotOfFileName fileName).IsSome
 
     member builder.GetParseResultsForFile fileName =
-        let isBrowser = RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"))
+        let isBrowser =
+            RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"))
+            || Environment.GetEnvironmentVariable("FCS_BROWSER") = "1"
         if isBrowser then
             failwith "GetParseResultsForFile is not supported on Browser; use GetParseResultsForFileAsync."
         else

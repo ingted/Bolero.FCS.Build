@@ -10,6 +10,7 @@ open System.Collections.Generic
 open System.Diagnostics
 open System.IO
 open System.Threading
+open System.Runtime.InteropServices
 open FSharp.Compiler.IO
 open FSharp.Compiler.NicePrint
 open Internal.Utilities.Library
@@ -3908,17 +3909,25 @@ type FSharpCheckProjectResults
                     | _ -> [||])
                 |> Array.toSeq
             | Choice2Of2 task ->
-                Async.StartImmediateAsTask(
-                    async {
-                        let! tcSymbolUses = task
-                        return
-                            seq {
-                                for symbolUses in tcSymbolUses do
-                                    yield! symbolUses.GetUsesOfSymbol symbol.Item
-                            }
-                    },
-                    ?cancellationToken = cancellationToken
-                ).Result
+                let usesTask =
+                    Async.StartImmediateAsTask(
+                        async {
+                            let! tcSymbolUses = task
+                            return
+                                seq {
+                                    for symbolUses in tcSymbolUses do
+                                        yield! symbolUses.GetUsesOfSymbol symbol.Item
+                                }
+                        },
+                        ?cancellationToken = cancellationToken
+                    )
+                let isBrowser =
+                    RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"))
+                    || Environment.GetEnvironmentVariable("FCS_BROWSER") = "1"
+                if isBrowser then
+                    if usesTask.IsCompleted then usesTask.Result else Seq.empty
+                else
+                    usesTask.Result
 
         results
         |> Seq.filter (fun symbolUse -> symbolUse.ItemOccurrence <> ItemOccurrence.RelatedText)
@@ -3950,7 +3959,15 @@ type FSharpCheckProjectResults
                         | _ -> TcSymbolUses.Empty
                     | _ -> TcSymbolUses.Empty)
                 |> Array.toSeq
-            | Choice2Of2 tcSymbolUses -> Async.StartImmediateAsTask(tcSymbolUses, ?cancellationToken = cancellationToken).Result
+            | Choice2Of2 tcSymbolUses ->
+                let allUsesTask = Async.StartImmediateAsTask(tcSymbolUses, ?cancellationToken = cancellationToken)
+                let isBrowser =
+                    RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"))
+                    || Environment.GetEnvironmentVariable("FCS_BROWSER") = "1"
+                if isBrowser then
+                    if allUsesTask.IsCompleted then allUsesTask.Result else Seq.empty
+                else
+                    allUsesTask.Result
 
         [|
             for r in tcSymbolUses do
