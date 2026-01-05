@@ -1,4 +1,4 @@
-namespace FSharp.Compiler.CodeAnalysis
+﻿namespace FSharp.Compiler.CodeAnalysis
 
 open FSharp.Compiler.Text
 open FSharp.Compiler.BuildGraph
@@ -6,7 +6,9 @@ open FSharp.Compiler.BuildGraph
 open System
 open System.Diagnostics
 open System.IO
+open System.Runtime.InteropServices
 open System.Threading
+open System.Threading.Tasks
 open Internal.Utilities.Collections
 open Internal.Utilities.Library
 open Internal.Utilities.Library.Extras
@@ -28,6 +30,12 @@ type SourceTextHash = int64
 type CacheStamp = int64
 type FileName = string
 type FilePath = string
+
+
+module IB =
+    let isBrowser = RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"))
+
+open IB
 type ProjectPath = string
 type FileVersion = int
 
@@ -630,7 +638,7 @@ type internal BackgroundCompiler
                 let parseTree = EmptyParsedInput(fileName, (false, false))
                 return FSharpParseFileResults(creationDiags, parseTree, true, [||])
             | Some builder ->
-                let parseTree, _, _, parseDiagnostics = builder.GetParseResultsForFile fileName
+                let! parseTree, _, _, parseDiagnostics = builder.GetParseResultsForFileAsync fileName
 
                 let parseDiagnostics =
                     DiagnosticHelpers.CreateDiagnostics(
@@ -962,7 +970,7 @@ type internal BackgroundCompiler
                 let typedResults = FSharpCheckFileResults.MakeEmpty(fileName, creationDiags, true)
                 return (parseResults, typedResults)
             | Some builder ->
-                let parseTree, _, _, parseDiagnostics = builder.GetParseResultsForFile fileName
+                let! parseTree, _, _, parseDiagnostics = builder.GetParseResultsForFileAsync fileName
                 let! tcProj = builder.GetFullCheckResultsAfterFileInProject fileName
 
                 let! tcInfo, tcInfoExtras = tcProj.GetOrComputeTcInfoWithExtras()
@@ -1134,10 +1142,17 @@ type internal BackgroundCompiler
         |> List.tryFind (fun f -> f.FileName = fileName)
         |> Option.bind (fun (f: FSharpFileSnapshot) ->
             let options = projectSnapshot.ToOptions()
-            let sourceText = f.GetSource().Result
+            let sourceTask = f.GetSource()
+            let sourceTextOpt =
+                if isBrowser && sourceTask.Status <> TaskStatus.RanToCompletion then
+                    None
+                else
+                    Some sourceTask.Result
 
-            self.TryGetRecentCheckResultsForFile(fileName, options, Some sourceText, userOpName)
-            |> Option.map (fun (parseFileResults, checkFileResults, _hash) -> (parseFileResults, checkFileResults)))
+            sourceTextOpt
+            |> Option.bind (fun sourceText ->
+                self.TryGetRecentCheckResultsForFile(fileName, options, Some sourceText, userOpName)
+                |> Option.map (fun (parseFileResults, checkFileResults, _hash) -> (parseFileResults, checkFileResults))))
 
     /// Parse and typecheck the whole project (the implementation, called recursively as project graph is evaluated)
     member private _.ParseAndCheckProjectImpl(options, userOpName) =

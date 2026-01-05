@@ -8,6 +8,7 @@ open System.Collections.Immutable
 open System.Diagnostics
 open System.IO
 open System.Threading
+open System.Runtime.InteropServices
 open Internal.Utilities.Library
 open Internal.Utilities.Collections
 open FSharp.Compiler
@@ -1360,11 +1361,18 @@ type IncrementalBuilder(initialState: IncrementalBuilderInitialState, state: Inc
         (builder.TryGetSlotOfFileName fileName).IsSome
 
     member builder.GetParseResultsForFile fileName =
-        let slotOfFile = builder.GetSlotOfFileName fileName
-        let syntaxTree = currentState.slots[slotOfFile].SyntaxTree
-        syntaxTree.ParseNode.GetOrComputeValue()
-        |> Async.StartImmediateAsTask
-        |> fun t -> t.Result
+        let isBrowser = RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"))
+        if isBrowser then
+            failwith "GetParseResultsForFile is not supported on Browser; use GetParseResultsForFileAsync."
+        else
+            builder.GetParseResultsForFileAsync fileName |> Async.RunSynchronously
+
+    member builder.GetParseResultsForFileAsync fileName =
+        async {
+            let slotOfFile = builder.GetSlotOfFileName fileName
+            let syntaxTree = currentState.slots[slotOfFile].SyntaxTree
+            return! syntaxTree.ParseNode.GetOrComputeValue()
+        }
 
     member builder.NotifyFileChanged(fileName, timeStamp) =
         async {

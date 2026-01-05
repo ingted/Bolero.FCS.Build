@@ -967,7 +967,9 @@ type StackGuard(name: string) =
         depth.Value <- depth.Value + 1
 
         try
-            if StackGuard.IsStackSufficient() then
+            let isBrowser =
+                RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"))
+            if StackGuard.IsStackSufficient() || isBrowser then
                 f ()
             else
                 let fileName = System.IO.Path.GetFileName(path)

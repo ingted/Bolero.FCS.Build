@@ -10,7 +10,7 @@ open System.Reflection
 [<assembly: System.Reflection.AssemblyCompanyAttribute("FSharp.Compiler.Service")>]
 [<assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")>]
 [<assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")>]
-[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f3c3c634c4e94b951c8d4117378bdce9c837fff0")>]
+[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+98a993ff6d86b0ab8dfac17f3480a2e19d1bdcc4")>]
 [<assembly: System.Reflection.AssemblyProductAttribute("FSharp.Compiler.Service")>]
 [<assembly: System.Reflection.AssemblyTitleAttribute("FSharp.Compiler.Service")>]
 [<assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")>]
