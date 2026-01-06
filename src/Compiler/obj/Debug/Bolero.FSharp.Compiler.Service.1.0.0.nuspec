@@ -7,7 +7,7 @@
     <description>The F# Compiler Services package for F# preview exposes additional functionality for implementing F# language bindings, additional tools based on the compiler or refactoring tools. The package also includes F# interactive service that can be used for embedding F# scripting into your applications.  Contains code from the F# Software Foundation.</description>
     <releaseNotes>/blob/main/docs/release-notes/.FSharp.Compiler.Service/9.0.100.md</releaseNotes>
     <tags>F#, fsharp, interactive, compiler, editor</tags>
-    <repository type="git" commit="eb379cd66f4bf03e5b6cdbe4082678316c9976fe" />
+    <repository type="git" commit="5a83d007bd2552ed2b2c87382c64488ba04e6883" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
         <dependency id="FSharp.Core" version="1.0.0" exclude="Build,Analyzers" />

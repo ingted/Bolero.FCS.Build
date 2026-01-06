@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
 
 // Driver for F# compiler.
 //
@@ -455,6 +455,7 @@ let main1Async
         disposables: DisposablesTracker
     ) =
     async {
+    System.Console.WriteLine("FCS DEBUG: Inside main1Async")
     // See Bug 735819
     let lcidFromCodePage =
         let thread = Thread.CurrentThread
@@ -602,6 +603,7 @@ let main1Async
         TcAssemblyResolutions.SplitNonFoundationalResolutions(tcConfig)
 
     // Import basic assemblies
+    System.Console.WriteLine("FCS DEBUG: Calling TcImports.BuildFrameworkTcImports")
     let! tcGlobals, frameworkTcImports =
         TcImports.BuildFrameworkTcImports(foundationalTcConfigP, sysRes, otherRes)
 
@@ -1227,6 +1229,7 @@ let CompileFromCommandLineArguments
         dynamicAssemblyCreator
     ) =
 
+    System.Console.WriteLine("FCS DEBUG: Inside CompileFromCommandLineArgumentsAsync")
     use disposables = new DisposablesTracker()
 
     main1 (
@@ -1260,8 +1263,10 @@ let CompileFromCommandLineArgumentsAsync
         dynamicAssemblyCreator
     ) =
     async {
+        System.Console.WriteLine("FCS DEBUG: Inside CompileFromCommandLineArgumentsAsync")
         use disposables = new DisposablesTracker()
 
+        System.Console.WriteLine("FCS DEBUG: Calling main1Async")
         let! args = main1Async (
             ctok,
             argv,
