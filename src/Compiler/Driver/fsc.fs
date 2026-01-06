@@ -442,6 +442,262 @@ let getParallelReferenceResolutionFromEnvironment () =
 ///   - Import assemblies
 ///   - Parse source files
 ///   - Check the inputs
+let main1Core
+    (
+        ctok,
+        argv,
+        legacyReferenceResolver,
+        bannerAlreadyPrinted,
+        reduceMemoryUsage: ReduceMemoryFlag,
+        defaultCopyFSharpCore: CopyFSharpCoreFlag,
+        exiter: Exiter,
+        diagnosticsLoggerProvider: IDiagnosticsLoggerProvider,
+        disposables: DisposablesTracker
+    ) =
+    async {
+    
+        // See Bug 735819
+        let lcidFromCodePage =
+            let thread = Thread.CurrentThread
+    
+            if
+                (Console.OutputEncoding.CodePage <> 65001)
+                && (Console.OutputEncoding.CodePage <> thread.CurrentUICulture.TextInfo.OEMCodePage)
+                && (Console.OutputEncoding.CodePage <> thread.CurrentUICulture.TextInfo.ANSICodePage)
+                && (CultureInfo.InvariantCulture <> thread.CurrentUICulture)
+            then
+                thread.CurrentUICulture <- CultureInfo("en-US")
+                Some 1033
+            else
+                None
+    
+        let directoryBuildingFrom = Directory.GetCurrentDirectory()
+    
+        let tryGetMetadataSnapshot = (fun _ -> None)
+    
+        let defaultFSharpBinariesDir =
+            FSharpEnvironment.BinFolderOfDefaultFSharpCompiler(None).Value
+    
+        let tcConfigB =
+            TcConfigBuilder.CreateNew(
+                legacyReferenceResolver,
+                defaultFSharpBinariesDir,
+                reduceMemoryUsage = reduceMemoryUsage,
+                implicitIncludeDir = directoryBuildingFrom,
+                isInteractive = false,
+                isInvalidationSupported = false,
+                defaultCopyFSharpCore = defaultCopyFSharpCore,
+                tryGetMetadataSnapshot = tryGetMetadataSnapshot,
+                sdkDirOverride = None,
+                rangeForErrors = range0,
+                compilationMode = CompilationMode.OneOff
+            )
+    
+        tcConfigB.exiter <- exiter
+    
+        // Preset: --optimize+ -g --tailcalls+ (see 4505)
+        SetOptimizeSwitch tcConfigB OptionSwitch.On
+        SetDebugSwitch tcConfigB None OptionSwitch.Off
+        SetTailcallSwitch tcConfigB OptionSwitch.On
+    
+        // Now install a delayed logger to hold all errors from flags until after all flags have been parsed (for example, --vserrors)
+        let delayForFlagsLogger = CapturingDiagnosticsLogger("DelayFlagsLogger")
+    
+        SetThreadDiagnosticsLoggerNoUnwind delayForFlagsLogger
+    
+        // Share intern'd strings across all lexing/parsing
+        let lexResourceManager = Lexhelp.LexResourceManager()
+    
+        let dependencyProvider = new DependencyProvider()
+    
+        // Process command line, flags and collect filenames
+        let sourceFiles =
+            // The ParseCompilerOptions function calls imperative function to process "real" args
+            // Rather than start processing, just collect names, then process them.
+            try
+                let files = ProcessCommandLineFlags(tcConfigB, lcidFromCodePage, argv)
+                let files = CheckAndReportSourceFileDuplicates(ResizeArray.ofList files)
+                AdjustForScriptCompile(tcConfigB, files, lexResourceManager, dependencyProvider)
+            with e ->
+                errorRecovery e rangeStartup
+                delayForFlagsLogger.CommitDelayedDiagnostics(diagnosticsLoggerProvider, tcConfigB, exiter)
+                exiter.Exit 1
+    
+        tcConfigB.conditionalDefines <- "COMPILED" :: tcConfigB.conditionalDefines
+    
+        // Override ParallelReferenceResolution set on the CLI with an environment setting if present.
+        match getParallelReferenceResolutionFromEnvironment () with
+        | Some parallelReferenceResolution -> tcConfigB.parallelReferenceResolution <- parallelReferenceResolution
+        | None -> ()
+    
+        if tcConfigB.utf8output && Console.OutputEncoding <> Encoding.UTF8 then
+            let previousEncoding = Console.OutputEncoding
+            Console.OutputEncoding <- Encoding.UTF8
+    
+            disposables.Register(
+                { new IDisposable with
+                    member _.Dispose() =
+                        Console.OutputEncoding <- previousEncoding
+                }
+            )
+    
+        // Display the banner text, if necessary
+        if not bannerAlreadyPrinted then
+            Console.Write(GetBannerText tcConfigB)
+    
+        // Create tcGlobals and frameworkTcImports
+        let outfile, pdbfile, assemblyName =
+            try
+                tcConfigB.DecideNames sourceFiles
+            with e ->
+                errorRecovery e rangeStartup
+                delayForFlagsLogger.CommitDelayedDiagnostics(diagnosticsLoggerProvider, tcConfigB, exiter)
+                exiter.Exit 1
+    
+        // DecideNames may give "no inputs" error. Abort on error at this point. bug://3911
+        if not tcConfigB.continueAfterParseFailure && delayForFlagsLogger.ErrorCount > 0 then
+            delayForFlagsLogger.CommitDelayedDiagnostics(diagnosticsLoggerProvider, tcConfigB, exiter)
+            exiter.Exit 1
+    
+        // If there's a problem building TcConfig, abort
+        let tcConfig =
+            try
+                TcConfig.Create(tcConfigB, validate = false)
+            with e ->
+                errorRecovery e rangeStartup
+                delayForFlagsLogger.CommitDelayedDiagnostics(diagnosticsLoggerProvider, tcConfigB, exiter)
+                exiter.Exit 1
+    
+        if tcConfig.showTimes then
+            StackGuardMetrics.CaptureStatsAndWriteToConsole() |> disposables.Register
+            Caches.CacheMetrics.CaptureStatsAndWriteToConsole() |> disposables.Register
+            Activity.Profiling.addConsoleListener () |> disposables.Register
+    
+        tcConfig.writeTimesToFile
+        |> Option.iter (fun f ->
+            Activity.CsvExport.addCsvFileListener f |> disposables.Register
+    
+            Activity.start
+                "FSC compilation"
+                [
+                    Activity.Tags.project, tcConfig.outputFile |> Option.defaultValue String.Empty
+                ]
+            |> disposables.Register)
+    
+        let diagnosticsLogger = diagnosticsLoggerProvider.CreateLogger(tcConfigB, exiter)
+    
+        // Install the global error logger and never remove it. This logger does have all command-line flags considered.
+        SetThreadDiagnosticsLoggerNoUnwind diagnosticsLogger
+    
+        // Forward all errors from flags
+        delayForFlagsLogger.CommitDelayedDiagnostics diagnosticsLogger
+    
+        if not tcConfigB.continueAfterParseFailure then
+            AbortOnError(diagnosticsLogger, exiter)
+    
+        // Resolve assemblies
+        ReportTime tcConfig "Import mscorlib+FSharp.Core"
+        let foundationalTcConfigP = TcConfigProvider.Constant tcConfig
+    
+        let sysRes, otherRes, knownUnresolved =
+            TcAssemblyResolutions.SplitNonFoundationalResolutions(tcConfig)
+    
+        // Import basic assemblies
+        let! tcGlobals, frameworkTcImports =
+            TcImports.BuildFrameworkTcImports(foundationalTcConfigP, sysRes, otherRes)
+    
+        let ilSourceDocs =
+            [
+                for sourceFile in sourceFiles -> tcGlobals.memoize_file (FileIndex.fileIndexOfFile sourceFile)
+            ]
+    
+        // Register framework tcImports to be disposed in future
+        disposables.Register frameworkTcImports
+    
+        // Parse sourceFiles
+        ReportTime tcConfig "Parse inputs"
+        use unwindParsePhase = UseBuildPhase BuildPhase.Parse
+    
+        let inputs =
+            ParseInputFiles(tcConfig, lexResourceManager, sourceFiles, diagnosticsLogger, false)
+    
+        let inputs, _ =
+            (Map.empty, inputs)
+            ||> List.mapFold (fun state (input, x) ->
+                let inputT, stateT = DeduplicateParsedInputModuleName state input
+                (inputT, x), stateT)
+    
+        // Print the AST if requested
+        if tcConfig.printAst then
+            for input, _filename in inputs do
+                printf "AST:\n"
+                printfn "%+A" input
+                printf "\n"
+    
+        if tcConfig.parseOnly then
+            exiter.Exit 0
+    
+        if not tcConfig.continueAfterParseFailure then
+            AbortOnError(diagnosticsLogger, exiter)
+    
+        let tcConfig =
+            (tcConfig, inputs)
+            ||> List.fold (fun z (input, sourceFileDirectory) ->
+                ApplyMetaCommandsFromInputToTcConfig(z, input, sourceFileDirectory, dependencyProvider))
+    
+        let tcConfigP = TcConfigProvider.Constant tcConfig
+    
+        // Import other assemblies
+        ReportTime tcConfig "Import non-system references"
+    
+        let! tcImports =
+            TcImports.BuildNonFrameworkTcImports(tcConfigP, frameworkTcImports, otherRes, knownUnresolved, dependencyProvider)
+    
+        // register tcImports to be disposed in future
+        disposables.Register tcImports
+    
+        if not tcConfig.continueAfterParseFailure then
+            AbortOnError(diagnosticsLogger, exiter)
+    
+        if tcConfig.importAllReferencesOnly then
+            exiter.Exit 0
+    
+        // Build the initial type checking environment
+        ReportTime tcConfig "Typecheck"
+    
+        use unwindParsePhase = UseBuildPhase BuildPhase.TypeCheck
+    
+        let tcEnv0, openDecls0 =
+            GetInitialTcEnv(assemblyName, rangeStartup, tcConfig, tcImports, tcGlobals)
+    
+        // Type check the inputs
+        let inputs = inputs |> List.map fst
+    
+        let tcState, topAttrs, typedAssembly, _tcEnvAtEnd =
+            TypeCheck(ctok, tcConfig, tcImports, tcGlobals, diagnosticsLogger, assemblyName, tcEnv0, openDecls0, inputs, exiter)
+    
+        AbortOnError(diagnosticsLogger, exiter)
+        ReportTime tcConfig "Typechecked"
+    
+        return Args(
+            ctok,
+            tcGlobals,
+            tcImports,
+            frameworkTcImports,
+            tcState.Ccu,
+            typedAssembly,
+            topAttrs,
+            tcConfig,
+            outfile,
+            pdbfile,
+            assemblyName,
+            diagnosticsLogger,
+            exiter,
+            ilSourceDocs
+        )
+    
+    }
+
 let main1
     (
         ctok,
@@ -454,248 +710,19 @@ let main1
         diagnosticsLoggerProvider: IDiagnosticsLoggerProvider,
         disposables: DisposablesTracker
     ) =
-
-    // See Bug 735819
-    let lcidFromCodePage =
-        let thread = Thread.CurrentThread
-
-        if
-            (Console.OutputEncoding.CodePage <> 65001)
-            && (Console.OutputEncoding.CodePage <> thread.CurrentUICulture.TextInfo.OEMCodePage)
-            && (Console.OutputEncoding.CodePage <> thread.CurrentUICulture.TextInfo.ANSICodePage)
-            && (CultureInfo.InvariantCulture <> thread.CurrentUICulture)
-        then
-            thread.CurrentUICulture <- CultureInfo("en-US")
-            Some 1033
-        else
-            None
-
-    let directoryBuildingFrom = Directory.GetCurrentDirectory()
-
-    let tryGetMetadataSnapshot = (fun _ -> None)
-
-    let defaultFSharpBinariesDir =
-        FSharpEnvironment.BinFolderOfDefaultFSharpCompiler(None).Value
-
-    let tcConfigB =
-        TcConfigBuilder.CreateNew(
+    main1Core
+        (
+            ctok,
+            argv,
             legacyReferenceResolver,
-            defaultFSharpBinariesDir,
-            reduceMemoryUsage = reduceMemoryUsage,
-            implicitIncludeDir = directoryBuildingFrom,
-            isInteractive = false,
-            isInvalidationSupported = false,
-            defaultCopyFSharpCore = defaultCopyFSharpCore,
-            tryGetMetadataSnapshot = tryGetMetadataSnapshot,
-            sdkDirOverride = None,
-            rangeForErrors = range0,
-            compilationMode = CompilationMode.OneOff
+            bannerAlreadyPrinted,
+            reduceMemoryUsage,
+            defaultCopyFSharpCore,
+            exiter,
+            diagnosticsLoggerProvider,
+            disposables
         )
-
-    tcConfigB.exiter <- exiter
-
-    // Preset: --optimize+ -g --tailcalls+ (see 4505)
-    SetOptimizeSwitch tcConfigB OptionSwitch.On
-    SetDebugSwitch tcConfigB None OptionSwitch.Off
-    SetTailcallSwitch tcConfigB OptionSwitch.On
-
-    // Now install a delayed logger to hold all errors from flags until after all flags have been parsed (for example, --vserrors)
-    let delayForFlagsLogger = CapturingDiagnosticsLogger("DelayFlagsLogger")
-
-    SetThreadDiagnosticsLoggerNoUnwind delayForFlagsLogger
-
-    // Share intern'd strings across all lexing/parsing
-    let lexResourceManager = Lexhelp.LexResourceManager()
-
-    let dependencyProvider = new DependencyProvider()
-
-    // Process command line, flags and collect filenames
-    let sourceFiles =
-        // The ParseCompilerOptions function calls imperative function to process "real" args
-        // Rather than start processing, just collect names, then process them.
-        try
-            let files = ProcessCommandLineFlags(tcConfigB, lcidFromCodePage, argv)
-            let files = CheckAndReportSourceFileDuplicates(ResizeArray.ofList files)
-            AdjustForScriptCompile(tcConfigB, files, lexResourceManager, dependencyProvider)
-        with e ->
-            errorRecovery e rangeStartup
-            delayForFlagsLogger.CommitDelayedDiagnostics(diagnosticsLoggerProvider, tcConfigB, exiter)
-            exiter.Exit 1
-
-    tcConfigB.conditionalDefines <- "COMPILED" :: tcConfigB.conditionalDefines
-
-    // Override ParallelReferenceResolution set on the CLI with an environment setting if present.
-    match getParallelReferenceResolutionFromEnvironment () with
-    | Some parallelReferenceResolution -> tcConfigB.parallelReferenceResolution <- parallelReferenceResolution
-    | None -> ()
-
-    if tcConfigB.utf8output && Console.OutputEncoding <> Encoding.UTF8 then
-        let previousEncoding = Console.OutputEncoding
-        Console.OutputEncoding <- Encoding.UTF8
-
-        disposables.Register(
-            { new IDisposable with
-                member _.Dispose() =
-                    Console.OutputEncoding <- previousEncoding
-            }
-        )
-
-    // Display the banner text, if necessary
-    if not bannerAlreadyPrinted then
-        Console.Write(GetBannerText tcConfigB)
-
-    // Create tcGlobals and frameworkTcImports
-    let outfile, pdbfile, assemblyName =
-        try
-            tcConfigB.DecideNames sourceFiles
-        with e ->
-            errorRecovery e rangeStartup
-            delayForFlagsLogger.CommitDelayedDiagnostics(diagnosticsLoggerProvider, tcConfigB, exiter)
-            exiter.Exit 1
-
-    // DecideNames may give "no inputs" error. Abort on error at this point. bug://3911
-    if not tcConfigB.continueAfterParseFailure && delayForFlagsLogger.ErrorCount > 0 then
-        delayForFlagsLogger.CommitDelayedDiagnostics(diagnosticsLoggerProvider, tcConfigB, exiter)
-        exiter.Exit 1
-
-    // If there's a problem building TcConfig, abort
-    let tcConfig =
-        try
-            TcConfig.Create(tcConfigB, validate = false)
-        with e ->
-            errorRecovery e rangeStartup
-            delayForFlagsLogger.CommitDelayedDiagnostics(diagnosticsLoggerProvider, tcConfigB, exiter)
-            exiter.Exit 1
-
-    if tcConfig.showTimes then
-        StackGuardMetrics.CaptureStatsAndWriteToConsole() |> disposables.Register
-        Caches.CacheMetrics.CaptureStatsAndWriteToConsole() |> disposables.Register
-        Activity.Profiling.addConsoleListener () |> disposables.Register
-
-    tcConfig.writeTimesToFile
-    |> Option.iter (fun f ->
-        Activity.CsvExport.addCsvFileListener f |> disposables.Register
-
-        Activity.start
-            "FSC compilation"
-            [
-                Activity.Tags.project, tcConfig.outputFile |> Option.defaultValue String.Empty
-            ]
-        |> disposables.Register)
-
-    let diagnosticsLogger = diagnosticsLoggerProvider.CreateLogger(tcConfigB, exiter)
-
-    // Install the global error logger and never remove it. This logger does have all command-line flags considered.
-    SetThreadDiagnosticsLoggerNoUnwind diagnosticsLogger
-
-    // Forward all errors from flags
-    delayForFlagsLogger.CommitDelayedDiagnostics diagnosticsLogger
-
-    if not tcConfigB.continueAfterParseFailure then
-        AbortOnError(diagnosticsLogger, exiter)
-
-    // Resolve assemblies
-    ReportTime tcConfig "Import mscorlib+FSharp.Core"
-    let foundationalTcConfigP = TcConfigProvider.Constant tcConfig
-
-    let sysRes, otherRes, knownUnresolved =
-        TcAssemblyResolutions.SplitNonFoundationalResolutions(tcConfig)
-
-    // Import basic assemblies
-    let tcGlobals, frameworkTcImports =
-        TcImports.BuildFrameworkTcImports(foundationalTcConfigP, sysRes, otherRes)
-        |> Async.RunImmediate
-
-    let ilSourceDocs =
-        [
-            for sourceFile in sourceFiles -> tcGlobals.memoize_file (FileIndex.fileIndexOfFile sourceFile)
-        ]
-
-    // Register framework tcImports to be disposed in future
-    disposables.Register frameworkTcImports
-
-    // Parse sourceFiles
-    ReportTime tcConfig "Parse inputs"
-    use unwindParsePhase = UseBuildPhase BuildPhase.Parse
-
-    let inputs =
-        ParseInputFiles(tcConfig, lexResourceManager, sourceFiles, diagnosticsLogger, false)
-
-    let inputs, _ =
-        (Map.empty, inputs)
-        ||> List.mapFold (fun state (input, x) ->
-            let inputT, stateT = DeduplicateParsedInputModuleName state input
-            (inputT, x), stateT)
-
-    // Print the AST if requested
-    if tcConfig.printAst then
-        for input, _filename in inputs do
-            printf "AST:\n"
-            printfn "%+A" input
-            printf "\n"
-
-    if tcConfig.parseOnly then
-        exiter.Exit 0
-
-    if not tcConfig.continueAfterParseFailure then
-        AbortOnError(diagnosticsLogger, exiter)
-
-    let tcConfig =
-        (tcConfig, inputs)
-        ||> List.fold (fun z (input, sourceFileDirectory) ->
-            ApplyMetaCommandsFromInputToTcConfig(z, input, sourceFileDirectory, dependencyProvider))
-
-    let tcConfigP = TcConfigProvider.Constant tcConfig
-
-    // Import other assemblies
-    ReportTime tcConfig "Import non-system references"
-
-    let tcImports =
-        TcImports.BuildNonFrameworkTcImports(tcConfigP, frameworkTcImports, otherRes, knownUnresolved, dependencyProvider)
-        |> Async.RunImmediate
-
-    // register tcImports to be disposed in future
-    disposables.Register tcImports
-
-    if not tcConfig.continueAfterParseFailure then
-        AbortOnError(diagnosticsLogger, exiter)
-
-    if tcConfig.importAllReferencesOnly then
-        exiter.Exit 0
-
-    // Build the initial type checking environment
-    ReportTime tcConfig "Typecheck"
-
-    use unwindParsePhase = UseBuildPhase BuildPhase.TypeCheck
-
-    let tcEnv0, openDecls0 =
-        GetInitialTcEnv(assemblyName, rangeStartup, tcConfig, tcImports, tcGlobals)
-
-    // Type check the inputs
-    let inputs = inputs |> List.map fst
-
-    let tcState, topAttrs, typedAssembly, _tcEnvAtEnd =
-        TypeCheck(ctok, tcConfig, tcImports, tcGlobals, diagnosticsLogger, assemblyName, tcEnv0, openDecls0, inputs, exiter)
-
-    AbortOnError(diagnosticsLogger, exiter)
-    ReportTime tcConfig "Typechecked"
-
-    Args(
-        ctok,
-        tcGlobals,
-        tcImports,
-        frameworkTcImports,
-        tcState.Ccu,
-        typedAssembly,
-        topAttrs,
-        tcConfig,
-        outfile,
-        pdbfile,
-        assemblyName,
-        diagnosticsLogger,
-        exiter,
-        ilSourceDocs
-    )
+    |> Async.RunImmediate
 
 /// Second phase of compilation.
 ///   - Write the signature file, check some attributes
@@ -1243,3 +1270,43 @@ let CompileFromCommandLineArguments
     |> main4 (tcImportsCapture, dynamicAssemblyCreator)
     |> main5
     |> main6 dynamicAssemblyCreator
+
+/// Async compilation entry point used by browser/WASM hosts.
+let CompileFromCommandLineArgumentsAsync
+    (
+        ctok,
+        argv,
+        legacyReferenceResolver,
+        bannerAlreadyPrinted,
+        reduceMemoryUsage,
+        defaultCopyFSharpCore,
+        exiter: Exiter,
+        loggerProvider,
+        tcImportsCapture,
+        dynamicAssemblyCreator
+    ) =
+    async {
+        use disposables = new DisposablesTracker()
+
+        let! args =
+            main1Core (
+                ctok,
+                argv,
+                legacyReferenceResolver,
+                bannerAlreadyPrinted,
+                reduceMemoryUsage,
+                defaultCopyFSharpCore,
+                exiter,
+                loggerProvider,
+                disposables
+            )
+
+        args
+        |> main2
+        |> main3
+        |> main4 (tcImportsCapture, dynamicAssemblyCreator)
+        |> main5
+        |> main6 dynamicAssemblyCreator
+
+        return ()
+    }

@@ -3,6 +3,7 @@
 namespace FSharp.Compiler.CodeAnalysis
 
 open System
+open System.Runtime.InteropServices
 open Internal.Utilities.Collections
 open Internal.Utilities.Library
 open FSharp.Compiler
@@ -59,6 +60,21 @@ module CompileHelpers =
             stopProcessingRecovery e range0
             Some e
 
+    let tryCompileAsync diagnosticsLogger f =
+        async {
+            use _ = UseBuildPhase BuildPhase.Parse
+            use _ = UseDiagnosticsLogger diagnosticsLogger
+
+            let exiter = StopProcessingExiter()
+
+            try
+                do! f exiter
+                return None
+            with e ->
+                stopProcessingRecovery e range0
+                return Some e
+        }
+
     /// Compile using the given flags.  Source files names are resolved via the FileSystem API. The output file must be given by a -o flag.
     let compileFromArgs (ctok, argv: string[], legacyReferenceResolver, tcImportsCapture, dynamicAssemblyCreator) =
 
@@ -81,6 +97,29 @@ module CompileHelpers =
                 ))
 
         diagnostics.ToArray(), result
+
+    let compileFromArgsAsync (ctok, argv: string[], legacyReferenceResolver, tcImportsCapture, dynamicAssemblyCreator) =
+        async {
+            let diagnostics, diagnosticsLogger, loggerProvider =
+                mkCompilationDiagnosticsHandlers (argv |> Array.contains "--flaterrors")
+
+            let! result =
+                tryCompileAsync diagnosticsLogger (fun exiter ->
+                    CompileFromCommandLineArgumentsAsync(
+                        ctok,
+                        argv,
+                        legacyReferenceResolver,
+                        true,
+                        ReduceMemoryFlag.Yes,
+                        CopyFSharpCoreFlag.No,
+                        exiter,
+                        loggerProvider,
+                        tcImportsCapture,
+                        dynamicAssemblyCreator
+                    ))
+
+            return diagnostics.ToArray(), result
+        }
 
 [<Sealed; AutoSerializable(false)>]
 // There is typically only one instance of this type in an IDE process.
@@ -317,7 +356,14 @@ type FSharpChecker
 
         async {
             let ctok = CompilationThreadToken()
-            return CompileHelpers.compileFromArgs (ctok, argv, legacyReferenceResolver, None, None)
+            let isBrowser =
+                RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"))
+                || Environment.GetEnvironmentVariable("FCS_BROWSER") = "1"
+
+            if isBrowser then
+                return! CompileHelpers.compileFromArgsAsync (ctok, argv, legacyReferenceResolver, None, None)
+            else
+                return CompileHelpers.compileFromArgs (ctok, argv, legacyReferenceResolver, None, None)
         }
 
     /// This function is called when the entire environment is known to have changed for reasons not encoded in the ProjectOptions of any project/compilation.

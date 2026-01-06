@@ -68,6 +68,10 @@ module internal FSharpEnvironment =
     //     - default location of fsi.exe in FSharp.VS.FSI.dll (REVIEW: check this)
     //     - default F# binaries directory in (project system) Project.fs
     let BinFolderOfDefaultFSharpCompiler (probePoint: string option) =
+#if BLAZOR
+        ignore probePoint
+        Some "/tmp"
+#else
         // Check for an app.config setting to redirect the default compiler location
         // Like fsharp-compiler-location
         try
@@ -95,6 +99,7 @@ module internal FSharpEnvironment =
                     | Some path -> Some path
         with e ->
             None
+#endif
 
     // Specify the tooling-compatible fragments of a path such as:
     //     typeproviders/fsharp41/net461/MyProvider.DesignTime.dll

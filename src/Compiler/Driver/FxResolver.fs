@@ -572,17 +572,25 @@ type internal FxResolver
         [
             "mscorlib"
             "System"
+#if !BLAZOR
             "System.Xml"
             "System.Runtime.Remoting"
             "System.Runtime.Serialization.Formatters.Soap"
             "System.Data"
             "System.Drawing"
+#endif
             "System.Core"
+#if !BLAZOR
             "System.Configuration"
+#endif
 
             getFSharpCoreLibraryName
+#if BLAZOR
+            ignore useFsiAuxLib
+#else
             if useFsiAuxLib then
                 fsiLibraryName
+#endif
 
             // always include a default reference to System.ValueTuple.dll in scripts and out-of-project sources
             match getSystemValueTupleImplementationReference () with
@@ -596,16 +604,22 @@ type internal FxResolver
             "System.Runtime" // lots of types
             "System.Linq" // System.Linq.Expressions.Expression<T>
             "System.Reflection" // System.Reflection.ParameterInfo
+#if !BLAZOR
             "System.Linq.Expressions" // System.Linq.IQueryable<T>
+#endif
             "System.Threading.Tasks" // valuetype [System.Threading.Tasks]System.Threading.CancellationToken
             "System.IO" //  System.IO.TextWriter
+#if !BLAZOR
             "System.Net.Requests" //  System.Net.WebResponse etc.
+#endif
             "System.Collections" // System.Collections.Generic.List<T>
             "System.Runtime.Numerics" // BigInteger
             "System.Threading" // OperationCanceledException
+#if !BLAZOR
             "System.Web"
             "System.Web.Services"
             "System.Windows.Forms"
+#endif
             "System.Numerics"
         ]
 

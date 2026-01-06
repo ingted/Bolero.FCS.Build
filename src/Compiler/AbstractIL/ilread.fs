@@ -4094,6 +4094,10 @@ and seekReadManifestResources (ctxt: ILMetadataReader) canReduceMemory (mdv: Bin
 
                         let byteStorage =
                             let bytes = pevEager.Slice(offsetOfBytesFromStartOfPhysicalPEFile, resourceLength)
+#if BLAZOR
+                            ignore canReduceMemory
+                            let canReduceMemory = false
+#endif
                             ByteStorage.FromByteMemoryAndCopy(bytes, useBackingMemoryMappedFile = canReduceMemory)
 
                         ILResourceLocation.Local(byteStorage)
