@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
 
 module FSharp.Compiler.Interactive.Shell
 
@@ -2171,7 +2171,7 @@ type internal FsiDynamicCompiler
         diagnosticsLogger.AbortOnError(fsiConsoleOutput)
 
         let importMap = tcImports.GetImportMap()
-
+        printfn "TC Debug 001"
         // optimize: note we collect the incremental optimization environment
         let optimizedImpls, _optData, optEnv =
             ApplyAllOptimizations(

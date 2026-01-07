@@ -45,11 +45,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "M:\\git\\Bolero.FCS.Build\\buildtools\\fsyacc\\fsyacc.fsproj",
+      "projectUniqueName": "M:\\git\\Bolero.FCS.Build - Copy\\buildtools\\fsyacc\\fsyacc.fsproj",
       "projectName": "fsyacc",
-      "projectPath": "M:\\git\\Bolero.FCS.Build\\buildtools\\fsyacc\\fsyacc.fsproj",
+      "projectPath": "M:\\git\\Bolero.FCS.Build - Copy\\buildtools\\fsyacc\\fsyacc.fsproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "M:\\git\\Bolero.FCS.Build\\buildtools\\fsyacc\\obj\\",
+      "outputPath": "M:\\git\\Bolero.FCS.Build - Copy\\buildtools\\fsyacc\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -73,8 +73,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "M:\\git\\Bolero.FCS.Build\\src\\FSharp.Core\\FSharp.Core.fsproj": {
-              "projectPath": "M:\\git\\Bolero.FCS.Build\\src\\FSharp.Core\\FSharp.Core.fsproj"
+            "M:\\git\\Bolero.FCS.Build - Copy\\src\\FSharp.Core\\FSharp.Core.fsproj": {
+              "projectPath": "M:\\git\\Bolero.FCS.Build - Copy\\src\\FSharp.Core\\FSharp.Core.fsproj"
             }
           }
         }

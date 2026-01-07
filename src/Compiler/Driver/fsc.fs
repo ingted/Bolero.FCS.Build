@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
 
 // Driver for F# compiler.
 //
@@ -442,7 +442,7 @@ let getParallelReferenceResolutionFromEnvironment () =
 ///   - Import assemblies
 ///   - Parse source files
 ///   - Check the inputs
-let main1
+let main1Async
     (
         ctok,
         argv,
@@ -454,7 +454,8 @@ let main1
         diagnosticsLoggerProvider: IDiagnosticsLoggerProvider,
         disposables: DisposablesTracker
     ) =
-
+    async {
+    System.Console.WriteLine("FCS DEBUG: Inside main1Async")
     // See Bug 735819
     let lcidFromCodePage =
         let thread = Thread.CurrentThread
@@ -602,9 +603,9 @@ let main1
         TcAssemblyResolutions.SplitNonFoundationalResolutions(tcConfig)
 
     // Import basic assemblies
-    let tcGlobals, frameworkTcImports =
+    System.Console.WriteLine("FCS DEBUG: Calling TcImports.BuildFrameworkTcImports")
+    let! tcGlobals, frameworkTcImports =
         TcImports.BuildFrameworkTcImports(foundationalTcConfigP, sysRes, otherRes)
-        |> Async.RunImmediate
 
     let ilSourceDocs =
         [
@@ -650,9 +651,8 @@ let main1
     // Import other assemblies
     ReportTime tcConfig "Import non-system references"
 
-    let tcImports =
+    let! tcImports =
         TcImports.BuildNonFrameworkTcImports(tcConfigP, frameworkTcImports, otherRes, knownUnresolved, dependencyProvider)
-        |> Async.RunImmediate
 
     // register tcImports to be disposed in future
     disposables.Register tcImports
@@ -674,13 +674,14 @@ let main1
     // Type check the inputs
     let inputs = inputs |> List.map fst
 
+    System.Console.WriteLine("FCS DEBUG: Calling TypeCheck main logic...")
     let tcState, topAttrs, typedAssembly, _tcEnvAtEnd =
         TypeCheck(ctok, tcConfig, tcImports, tcGlobals, diagnosticsLogger, assemblyName, tcEnv0, openDecls0, inputs, exiter)
 
     AbortOnError(diagnosticsLogger, exiter)
     ReportTime tcConfig "Typechecked"
 
-    Args(
+    return Args(
         ctok,
         tcGlobals,
         tcImports,
@@ -696,6 +697,10 @@ let main1
         exiter,
         ilSourceDocs
     )
+    }
+
+let main1 args =
+    Async.RunImmediate (main1Async args)
 
 /// Second phase of compilation.
 ///   - Write the signature file, check some attributes
@@ -842,7 +847,7 @@ let main3
         let optEnv0 = GetInitialOptimizationEnv(tcImports, tcGlobals)
 
         let importMap = tcImports.GetImportMap()
-
+        printfn "TC Debug 003"
         let optimizedImpls, optimizationData, _ =
             ApplyAllOptimizations(
                 tcConfig,
@@ -1225,6 +1230,7 @@ let CompileFromCommandLineArguments
         dynamicAssemblyCreator
     ) =
 
+    System.Console.WriteLine("FCS DEBUG: Inside CompileFromCommandLineArgumentsAsync")
     use disposables = new DisposablesTracker()
 
     main1 (
@@ -1243,3 +1249,41 @@ let CompileFromCommandLineArguments
     |> main4 (tcImportsCapture, dynamicAssemblyCreator)
     |> main5
     |> main6 dynamicAssemblyCreator
+
+let CompileFromCommandLineArgumentsAsync
+    (
+        ctok,
+        argv,
+        legacyReferenceResolver,
+        bannerAlreadyPrinted,
+        reduceMemoryUsage,
+        defaultCopyFSharpCore,
+        exiter: Exiter,
+        loggerProvider,
+        tcImportsCapture,
+        dynamicAssemblyCreator
+    ) =
+    async {
+        System.Console.WriteLine("FCS DEBUG: Inside CompileFromCommandLineArgumentsAsync")
+        use disposables = new DisposablesTracker()
+
+        System.Console.WriteLine("FCS DEBUG: Calling main1Async")
+        let! args = main1Async (
+            ctok,
+            argv,
+            legacyReferenceResolver,
+            bannerAlreadyPrinted,
+            reduceMemoryUsage,
+            defaultCopyFSharpCore,
+            exiter,
+            loggerProvider,
+            disposables
+        )
+        return
+            args
+            |> main2
+            |> main3
+            |> main4 (tcImportsCapture, dynamicAssemblyCreator)
+            |> main5
+            |> main6 dynamicAssemblyCreator
+    }

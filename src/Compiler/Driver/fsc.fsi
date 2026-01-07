@@ -55,5 +55,19 @@ val CompileFromCommandLineArguments:
     dynamicAssemblyCreator: (TcConfig * TcGlobals * string * ILModuleDef -> unit) option ->
         unit
 
+/// The main (non-incremental) compilation entry point used by fsc.exe, async version
+val CompileFromCommandLineArgumentsAsync:
+    ctok: CompilationThreadToken *
+    argv: string[] *
+    legacyReferenceResolver: LegacyReferenceResolver *
+    bannerAlreadyPrinted: bool *
+    reduceMemoryUsage: ReduceMemoryFlag *
+    defaultCopyFSharpCore: CopyFSharpCoreFlag *
+    exiter: Exiter *
+    loggerProvider: IDiagnosticsLoggerProvider *
+    tcImportsCapture: (TcImports -> unit) option *
+    dynamicAssemblyCreator: (TcConfig * TcGlobals * string * ILModuleDef -> unit) option ->
+        Async<unit>
+
 /// Read the parallelReferenceResolution flag from environment variables
 val internal getParallelReferenceResolutionFromEnvironment: unit -> ParallelReferenceResolution option

@@ -150,7 +150,9 @@ let processGraph<'Item, 'Result when 'Item: equality and 'Item: comparison>
     leaves |> Array.iter queueNode
 
     // Wait for end of processing, an exception, or an external cancellation request.
-    let isBrowser = RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"))
+    let isBrowser =
+        RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"))
+        || Environment.GetEnvironmentVariable("FCS_BROWSER") = "1"
     if isBrowser then
         while not cts.IsCancellationRequested do
             Thread.Yield() |> ignore

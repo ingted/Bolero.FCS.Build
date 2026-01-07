@@ -9,6 +9,7 @@ open System.Diagnostics
 open System.IO
 open System.Threading
 open System.Threading.Tasks
+open System.Runtime.InteropServices
 open System.Runtime.CompilerServices
 
 open FSharp.Compiler.Caches
@@ -147,6 +148,11 @@ module internal PervasiveAutoOpens =
             Async.StartWithContinuations(computation, ts.SetResult, ts.SetException, (fun _ -> ts.SetCanceled()), cancellationToken)
 
             try
+                let isBrowser =
+                    RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER"))
+                    || Environment.GetEnvironmentVariable("FCS_BROWSER") = "1"
+                if isBrowser && not task.IsCompleted then
+                    raise (PlatformNotSupportedException("Async.RunImmediate is not supported on Browser."))
                 task.Result
             with :? AggregateException as ex when ex.InnerExceptions.Count = 1 ->
                 raise (ex.InnerExceptions[0])

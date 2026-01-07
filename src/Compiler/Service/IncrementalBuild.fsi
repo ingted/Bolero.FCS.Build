@@ -269,6 +269,11 @@ type internal IncrementalBuilder =
     /// This may be a marginally long-running operation (parses are relatively quick, only one file needs to be parsed)
     member GetParseResultsForFile: fileName: string -> ParsedInput * range * string * PhasedDiagnostic[]
 
+    /// Await the untyped parse results for a particular slot in the vector of parse results.
+    ///
+    /// This may be a marginally long-running operation (parses are relatively quick, only one file needs to be parsed)
+    member GetParseResultsForFileAsync: fileName: string -> Async<ParsedInput * range * string * PhasedDiagnostic[]>
+
     member NotifyFileChanged: fileName: string * timeStamp: DateTime -> Async<unit>
 
     /// Create the incremental builder

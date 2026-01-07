@@ -14,9 +14,10 @@
     <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' AND '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgSystem_Runtime_CompilerServices_Unsafe Condition=" '$(PkgSystem_Runtime_CompilerServices_Unsafe)' == '' ">C:\Users\Administrator\.nuget\packages\system.runtime.compilerservices.unsafe\6.0.0</PkgSystem_Runtime_CompilerServices_Unsafe>
-    <PkgSystem_Reflection_Metadata Condition=" '$(PkgSystem_Reflection_Metadata)' == '' ">C:\Users\Administrator\.nuget\packages\system.reflection.metadata\8.0.0</PkgSystem_Reflection_Metadata>
+    <PkgSystem_Runtime_CompilerServices_Unsafe Condition=" '$(PkgSystem_Runtime_CompilerServices_Unsafe)' == '' ">C:\Users\Administrator\.nuget\packages\system.runtime.compilerservices.unsafe\6.1.2</PkgSystem_Runtime_CompilerServices_Unsafe>
+    <PkgSystem_Reflection_Metadata Condition=" '$(PkgSystem_Reflection_Metadata)' == '' ">C:\Users\Administrator\.nuget\packages\system.reflection.metadata\10.0.1</PkgSystem_Reflection_Metadata>
     <PkgSystem_Reflection_Emit Condition=" '$(PkgSystem_Reflection_Emit)' == '' ">C:\Users\Administrator\.nuget\packages\system.reflection.emit\4.7.0</PkgSystem_Reflection_Emit>
     <PkgNETStandard_Library Condition=" '$(PkgNETStandard_Library)' == '' ">C:\Users\Administrator\.nuget\packages\netstandard.library\2.0.3</PkgNETStandard_Library>
+    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\Administrator\.nuget\packages\fsharp.core\10.0.101</PkgFSharp_Core>
   </PropertyGroup>
 </Project>
