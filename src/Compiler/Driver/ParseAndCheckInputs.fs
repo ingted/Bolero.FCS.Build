@@ -1083,6 +1083,7 @@ type TcState =
 
 /// Create the initial type checking state for compiling an assembly
 let GetInitialTcState (m, ccuName, tcConfig: TcConfig, tcGlobals, tcImports: TcImports, tcEnv0, openDecls0) =
+    System.Console.WriteLine("FCS DEBUG: Inside GetInitialTcState")
     ignore tcImports
 
     // Create a ccu to hold all the results of compilation
@@ -1110,6 +1111,7 @@ let GetInitialTcState (m, ccuName, tcConfig: TcConfig, tcGlobals, tcImports: TcI
             XmlDocumentationInfo = None
         }
 
+    System.Console.WriteLine("FCS DEBUG: Creating CcuThunk")
     let ccu = CcuThunk.Create(ccuName, ccuData)
 
     // OK, is this is the FSharp.Core CCU then fix it up.
@@ -1346,7 +1348,8 @@ let DiagnosticsLoggerForInput (tcConfig: TcConfig, oldLogger) =
     GetDiagnosticsLoggerFilteringByScopedNowarn(tcConfig.diagnosticsOptions, oldLogger)
 
 /// Typecheck a single file (or interactive entry into F# Interactive)
-let CheckOneInputEntry (ctok, checkForErrors, tcConfig: TcConfig, tcImports, tcGlobals, prefixPathOpt) tcState input =
+let CheckOneInputEntry (ctok, checkForErrors, tcConfig: TcConfig, tcImports, tcGlobals, prefixPathOpt) tcState (input:ParsedInput) =
+    System.Console.WriteLine("FCS DEBUG: Checking input: " + input.FileName)
     cancellable {
         // Equip loggers to locally filter w.r.t. scope pragmas in each input
         use _ =
@@ -1393,7 +1396,8 @@ let CheckClosedInputSetFinish (declaredImpls: CheckedImplFile list, tcState) =
 
     tcState, declaredImpls, ccuContents
 
-let CheckMultipleInputsSequential (ctok, checkForErrors, tcConfig, tcImports, tcGlobals, prefixPathOpt, tcState, inputs) =
+let CheckMultipleInputsSequential (ctok, checkForErrors, tcConfig, tcImports, tcGlobals, prefixPathOpt, tcState, (inputs:ParsedInput list)) =
+    System.Console.WriteLine("FCS DEBUG: Inside CheckMultipleInputsSequential with " + string inputs.Length + " inputs")
     (tcState, inputs)
     ||> List.mapFold (CheckOneInputEntry(ctok, checkForErrors, tcConfig, tcImports, tcGlobals, prefixPathOpt))
 
@@ -1881,6 +1885,7 @@ let CheckMultipleInputsUsingGraphMode
         partialResults, tcState)
 
 let CheckClosedInputSet (ctok, checkForErrors, tcConfig: TcConfig, tcImports, tcGlobals, prefixPathOpt, tcState, eagerFormat, inputs) =
+    System.Console.WriteLine("FCS DEBUG: Inside CheckClosedInputSet")
     // tcEnvAtEndOfLastFile is the environment required by fsi.exe when incrementally adding definitions
     let results, tcState =
         match tcConfig.typeCheckingConfig.Mode with
