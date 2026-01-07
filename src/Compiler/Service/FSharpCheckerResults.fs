@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
 
 // Open up the compiler as an incremental service for parsing,
 // type checking and intellisense-like environment-reporting.
@@ -3877,6 +3877,7 @@ type FSharpCheckProjectResults
         let outfile = "" // only used if tcConfig.writeTermsToFiles is true
         let importMap = tcImports.GetImportMap()
         let optEnv0 = GetInitialOptimizationEnv(tcImports, tcGlobals)
+        printfn "TC Debug 002"
         let tcConfig = getTcConfig ()
         let isIncrementalFragment = false
         let tcVal = LightweightTcValForUsingInBuildMethodCall tcGlobals

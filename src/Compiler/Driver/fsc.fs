@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
 
 // Driver for F# compiler.
 //
@@ -847,7 +847,7 @@ let main3
         let optEnv0 = GetInitialOptimizationEnv(tcImports, tcGlobals)
 
         let importMap = tcImports.GetImportMap()
-
+        printfn "TC Debug 003"
         let optimizedImpls, optimizationData, _ =
             ApplyAllOptimizations(
                 tcConfig,

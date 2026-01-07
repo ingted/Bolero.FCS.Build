@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
 
 module internal FSharp.Compiler.OptimizeInputs
 
@@ -509,6 +509,8 @@ let ApplyAllOptimizations
 
     let phases = phases.ToArray()
 
+    printfn "TC Debug, processingMode: %A" tcConfig.optSettings.processingMode
+
     let results, optEnvFirstLoop =
         match tcConfig.optSettings.processingMode with
         // Parallel optimization breaks determinism - turn it off in deterministic builds.
@@ -517,7 +519,9 @@ let ApplyAllOptimizations
                 ParallelOptimization.optimizeFilesInParallel optEnv phases implFiles
 
             results |> Array.toList, optEnvFirstPhase
-        | Optimizer.OptimizationProcessingMode.Sequential -> optimizeFilesSequentially optEnv phases implFiles
+        //| Optimizer.OptimizationProcessingMode.Sequential -> optimizeFilesSequentially optEnv phases implFiles
+        //20260107: 強迫 seq 執行則這邊要吃 _ 不然會 MatchFailureException
+        | _ -> optimizeFilesSequentially optEnv phases implFiles
 
 #if DEBUG
     if tcConfig.showOptimizationData then
