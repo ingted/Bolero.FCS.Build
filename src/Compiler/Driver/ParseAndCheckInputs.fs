@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All Rights Reserved. See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation. All Rights Reserved. See License.txt in the project root for license information.
 
 /// Contains logic to coordinate the parsing and checking of one or a group of files
 module internal FSharp.Compiler.ParseAndCheckInputs
@@ -990,11 +990,14 @@ let GetInitialTcEnv (assemblyName: string, initm: range, tcConfig: TcConfig, tcI
             let tcEnv, openDecls1 =
                 TcOpenModuleOrNamespaceDecl TcResultsSink.NoSink tcGlobals amap initm tcEnv (checkOperatorsModule, initm)
 
+            System.Console.WriteLine("FCS DEBUG: GetInitialTcEnv is about to return")
             tcEnv, openDecls0 @ openDecls1
         with RecoverableException e ->
             errorRecovery e initm
+            System.Console.WriteLine("FCS DEBUG: GetInitialTcEnv is about to return")
             tcEnv, openDecls0
     else
+        System.Console.WriteLine("FCS DEBUG: GetInitialTcEnv is about to return")
         tcEnv, openDecls0
 
 /// Inject faults into checking

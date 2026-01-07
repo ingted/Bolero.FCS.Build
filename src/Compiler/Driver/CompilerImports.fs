@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All Rights Reserved. See License.txt in the project root for license information.
+﻿    // Copyright (c) Microsoft Corporation. All Rights Reserved. See License.txt in the project root for license information.
 
 /// Contains logic to coordinate assembly resolution and manage the TcImports table of referenced
 /// assemblies.
@@ -2249,6 +2249,7 @@ and [<Sealed>] TcImports
 
     // NOTE: When used in the Language Service this can cause the transitive checking of projects. Hence it must be cancellable.
     member tcImports.RegisterAndImportReferencedAssemblies(ctok, nms: AssemblyResolution list) =
+        System.Console.WriteLine("FCS DEBUG: Inside RegisterAndImportReferencedAssemblies with " + string nms.Length + " assemblies")
         let tryGetAssemblyData (r: AssemblyResolution) =
             async {
                 CheckDisposed()
@@ -2329,6 +2330,7 @@ and [<Sealed>] TcImports
 
             let tcConfig = tcConfigP.Get ctok
 
+            System.Console.WriteLine("FCS DEBUG: RegisterAndImportReferencedAssemblies - parallelReferenceResolution: " + string tcConfig.parallelReferenceResolution)
             let runMethod computations =
                 match tcConfig.parallelReferenceResolution with
                 | ParallelReferenceResolution.On -> MultipleDiagnosticsLoggers.Parallel computations
@@ -2507,6 +2509,7 @@ and [<Sealed>] TcImports
             let primaryAssemblyResolution =
                 frameworkTcImports.ResolveAssemblyReference(ctok, primaryAssemblyReference, ResolveAssemblyReferenceMode.ReportErrors)
 
+            System.Console.WriteLine("FCS DEBUG: Calling RegisterAndImportReferencedAssemblies for primary assembly")
             let! primaryAssem = frameworkTcImports.RegisterAndImportReferencedAssemblies(ctok, primaryAssemblyResolution)
 
             let primaryScopeRef =
@@ -2586,6 +2589,7 @@ and [<Sealed>] TcImports
                 }
 
             // Load the rest of the framework DLLs all at once (they may be mutually recursive)
+            System.Console.WriteLine("FCS DEBUG: Calling RegisterAndImportReferencedAssemblies for resolvedAssemblies")
             let! _assemblies = frameworkTcImports.RegisterAndImportReferencedAssemblies(ctok, resolvedAssemblies)
 
             // These are the DLLs we can search for well-known types

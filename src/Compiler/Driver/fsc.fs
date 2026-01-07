@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
 
 // Driver for F# compiler.
 //
@@ -674,6 +674,7 @@ let main1Async
     // Type check the inputs
     let inputs = inputs |> List.map fst
 
+    System.Console.WriteLine("FCS DEBUG: Calling TypeCheck main logic...")
     let tcState, topAttrs, typedAssembly, _tcEnvAtEnd =
         TypeCheck(ctok, tcConfig, tcImports, tcGlobals, diagnosticsLogger, assemblyName, tcEnv0, openDecls0, inputs, exiter)
 

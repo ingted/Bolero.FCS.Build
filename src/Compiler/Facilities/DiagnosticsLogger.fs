@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information.
 
 module FSharp.Compiler.DiagnosticsLogger
 
@@ -1049,11 +1049,16 @@ module MultipleDiagnosticsLoggers =
 
     let Sequential computations =
         async {
+            System.Console.WriteLine("FCS DEBUG: Inside Sequential with " + string (Seq.length computations) + " computations")
             let results = ResizeArray()
-
+            let mutable i = 0
             for computation in computations do
+                System.Console.WriteLine("FCS DEBUG: Sequential loop iteration " + string i)
                 let! result = computation
+                System.Console.WriteLine("FCS DEBUG: Sequential loop iteration " + string i + " done")
                 results.Add result
+                i <- i + 1
 
+            System.Console.WriteLine("FCS DEBUG: Sequential finished")
             return results.ToArray()
         }
