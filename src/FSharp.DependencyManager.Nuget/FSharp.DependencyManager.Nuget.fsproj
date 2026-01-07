@@ -59,8 +59,4 @@
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="$(SystemRuntimeCompilerServicesUnsafeVersion)" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\FSharp.Core\FSharp.Core.fsproj" />
-  </ItemGroup>
-
 </Project>

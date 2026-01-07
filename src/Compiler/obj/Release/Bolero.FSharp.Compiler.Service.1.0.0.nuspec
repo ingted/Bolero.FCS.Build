@@ -7,18 +7,18 @@
     <description>The F# Compiler Services package for F# preview exposes additional functionality for implementing F# language bindings, additional tools based on the compiler or refactoring tools. The package also includes F# interactive service that can be used for embedding F# scripting into your applications.  Contains code from the F# Software Foundation.</description>
     <releaseNotes>/blob/main/docs/release-notes/.FSharp.Compiler.Service/9.0.100.md</releaseNotes>
     <tags>F#, fsharp, interactive, compiler, editor</tags>
-    <repository type="git" commit="58ebe14232750863c470e29a0e728df7607a224b" />
+    <repository type="git" commit="4e742b80bf55afe287ed477515496c318156d637" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="FSharp.Core" version="1.0.0" exclude="Build,Analyzers" />
-        <dependency id="FSharp.DependencyManager.Nuget" version="1.0.0" exclude="Build,Analyzers" />
-        <dependency id="System.Buffers" version="4.5.1" exclude="Build,Analyzers" />
-        <dependency id="System.Collections.Immutable" version="8.0.0" exclude="Build,Analyzers" />
-        <dependency id="System.Diagnostics.DiagnosticSource" version="8.0.0" exclude="Build,Analyzers" />
-        <dependency id="System.Memory" version="4.5.5" exclude="Build,Analyzers" />
+        <dependency id="FSharp.Core" version="10.0.101" exclude="Build,Analyzers" />
+        <dependency id="FSharp.DependencyManager.Nuget" version="37.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.Buffers" version="4.6.1" exclude="Build,Analyzers" />
+        <dependency id="System.Collections.Immutable" version="10.0.1" exclude="Build,Analyzers" />
+        <dependency id="System.Diagnostics.DiagnosticSource" version="10.0.1" exclude="Build,Analyzers" />
+        <dependency id="System.Memory" version="4.6.3" exclude="Build,Analyzers" />
         <dependency id="System.Reflection.Emit" version="4.7.0" exclude="Build,Analyzers" />
-        <dependency id="System.Reflection.Metadata" version="8.0.0" exclude="Build,Analyzers" />
-        <dependency id="System.Runtime.CompilerServices.Unsafe" version="6.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.Reflection.Metadata" version="10.0.1" exclude="Build,Analyzers" />
+        <dependency id="System.Runtime.CompilerServices.Unsafe" version="6.1.2" exclude="Build,Analyzers" />
       </group>
     </dependencies>
     <contentFiles>
