@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All Rights Reserved. See License.txt in the project root for license information.
+// Copyright (c) Microsoft Corporation. All Rights Reserved. See License.txt in the project root for license information.
 
 /// Contains logic to coordinate the parsing and checking of one or a group of files
 module internal FSharp.Compiler.ParseAndCheckInputs
